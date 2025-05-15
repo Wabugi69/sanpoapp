@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "jp.ac.sanpoapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "jp.ac.sanpoapp"
