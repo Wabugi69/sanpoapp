@@ -8,6 +8,7 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
+<<<<<<< HEAD
 
     <ImageView
         android:id="@+id/imageView"
@@ -79,6 +80,8 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/cateyes" />
+=======
+>>>>>>> f8376b78d1b5df2bd9b97cedea1ad08b2ab7f7d5
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
