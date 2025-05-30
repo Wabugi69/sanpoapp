@@ -44,8 +44,6 @@ public class LoginTest extends AppCompatActivity {
         tx3 = findViewById(R.id.tx3);
     }
 
-    //TODO Write a code to test registration. You can currently register from the terminal
-
     public void RegisterUser(View v) {
         String newEmail, newUsername, newPassword;
 
@@ -85,7 +83,7 @@ public class LoginTest extends AppCompatActivity {
                 String finalResponse = response.toString();
 
                 runOnUiThread(() -> {
-                    Toast.makeText(getApplicationContext(), "サーバーリスポンス：" + finalResponse, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
                 });
             } catch (Exception e){
                 e.printStackTrace();
