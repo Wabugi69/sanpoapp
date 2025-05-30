@@ -9,7 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 public class Register extends AppCompatActivity {
 
@@ -25,9 +28,16 @@ public class Register extends AppCompatActivity {
 
         usernameInput = findViewById(R.id.usernameInput);
         passwordInput = findViewById(R.id.passwordInput);
-        registerButton = findViewById(R.id.registerButton);
-        alreadyAccountButton = findViewById(R.id.alreadyAccountButton);
         togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
+
+        ExtendedFloatingActionButton  registerButton = findViewById(R.id. registerButton);
+        ExtendedFloatingActionButton alreadyAccountButton = findViewById(R.id. alreadyAccountButton );
+
+        Button BacktoMain = findViewById(R.id.BacktoMain);
+        BacktoMain.setOnClickListener(v -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
 
         // Toggle password
         togglePasswordVisibility.setOnClickListener(v -> {

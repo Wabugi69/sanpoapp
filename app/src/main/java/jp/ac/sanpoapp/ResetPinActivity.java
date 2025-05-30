@@ -10,10 +10,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
 public class ResetPinActivity extends AppCompatActivity {
 
     EditText newPasswordInput, confirmPasswordInput;
-    Button resetButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,8 @@ public class ResetPinActivity extends AppCompatActivity {
 
         newPasswordInput = findViewById(R.id.newPasswordInput);
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
-        resetButton = findViewById(R.id.resetPasswordButton);
+
+        ExtendedFloatingActionButton resetButton = findViewById(R.id.resetPasswordButton);
 
         Button backToLoginButton = findViewById(R.id.backToLoginButton);
         backToLoginButton.setOnClickListener(v -> {

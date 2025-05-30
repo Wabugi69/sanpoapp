@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 public class Login extends AppCompatActivity {
 
     EditText loginUsername, loginPassword;
-    Button loginButton, forgotPasswordButton;
     ImageView togglePasswordVisibility;
     boolean isPasswordVisible = false;
 
@@ -27,9 +29,16 @@ public class Login extends AppCompatActivity {
 
         loginUsername = findViewById(R.id.loginUsername);
         loginPassword = findViewById(R.id.loginPassword);
-        loginButton = findViewById(R.id.loginButton);
-        forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
         togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
+
+        ExtendedFloatingActionButton loginButton = findViewById(R.id.loginButton);
+        ExtendedFloatingActionButton forgotPasswordButton= findViewById(R.id.forgotPasswordButton);
+
+        Button Back= findViewById(R.id.Back);
+        Back.setOnClickListener(v -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
 
         // Toggle password visibility
         togglePasswordVisibility.setOnClickListener(v -> {
@@ -55,7 +64,7 @@ public class Login extends AppCompatActivity {
 
             if (inputUser.equals(savedUser) && inputPass.equals(savedPass)) {
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, MyPage.class));
                 finish();
             } else {
                 Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show();

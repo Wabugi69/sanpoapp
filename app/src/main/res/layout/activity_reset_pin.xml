@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <EditText
         android:id="@+id/newPasswordInput"
@@ -29,11 +30,14 @@
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="32dp" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/resetPasswordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reset Password"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/pet_primary"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/confirmPasswordInput"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,10 +48,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
+        android:textColor="@color/pet_text"
+        app:backgroundTint="@color/white"
+        android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="32dp"
         android:layout_marginStart="16dp"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

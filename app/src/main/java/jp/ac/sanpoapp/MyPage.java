@@ -10,10 +10,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
 public class MyPage extends AppCompatActivity {
 
     TextView accountInfo;
-    Button logoutButton, deleteAccountButton, backToMyPage;
+    Button backToMyPage,myPageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +23,10 @@ public class MyPage extends AppCompatActivity {
         setContentView(R.layout.activity_my_page);
 
         accountInfo = findViewById(R.id.accountInfo);
-        logoutButton = findViewById(R.id.logoutButton);
-        deleteAccountButton = findViewById(R.id.deleteAccountButton);
         backToMyPage = findViewById(R.id.backToMyPage);
+
+        ExtendedFloatingActionButton  logoutButton= findViewById(R.id. logoutButton);
+        ExtendedFloatingActionButton deleteAccountButton= findViewById(R.id.deleteAccountButton);
 
         backToMyPage.setOnClickListener(v -> {
             Intent intent = new Intent(MyPage.this, MainActivity.class);
@@ -64,6 +67,10 @@ public class MyPage extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
+        });
+        myPageButton = findViewById(R.id.myPageButton);
+        myPageButton.setOnClickListener(v -> {
+            startActivity(new Intent(this, MyPage.class));
         });
     }
 }
