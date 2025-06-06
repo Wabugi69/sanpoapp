@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="pet_primary">#FFB6C1</color> <!-- Light pink -->
+    <color name="pet_secondary">#FFD700</color> <!-- Gold -->
+    <color name="pet_accent">#87CEFA</color> <!-- Sky blue -->
+    <color name="pet_bg">#FFF5EE</color> <!-- Seashell white -->
+    <color name="pet_text">#5A4D41</color> <!-- Warm brown -->
+    <color name="white">#FFFFFF</color>
 </resources>

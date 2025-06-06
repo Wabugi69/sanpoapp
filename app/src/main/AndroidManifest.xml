@@ -16,8 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sanpoapp"
         tools:targetApi="31">
+
         <activity
+
             android:name=".LoginTest"
+            android:exported="false" />
+        <activity
+            android:name=".ResetPinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,9 +33,20 @@
             </intent-filter>
         </activity>
 
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+        <activity
+            android:name=".Register"
+            android:exported="false">
+
+        </activity>
+
     </application>
 
 </manifest>
