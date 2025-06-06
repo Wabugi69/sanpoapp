@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,8 +27,9 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Login extends AppCompatActivity {
 
-    EditText loginUsername, loginPassword;
+    EditText loginEmail, loginPassword;
     ImageView togglePasswordVisibility;
+    CheckBox rememberMeCheckBox;
     boolean isPasswordVisible = false;
 
     @SuppressLint("MissingInflatedId")
@@ -36,14 +38,16 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginUsername = findViewById(R.id.loginUsername);
+        loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
         togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
+        rememberMeCheckBox = findViewById(R.id.rememberMeCheckBox);
 
         ExtendedFloatingActionButton loginButton = findViewById(R.id.loginButton);
-        ExtendedFloatingActionButton forgotPasswordButton= findViewById(R.id.forgotPasswordButton);
+        ExtendedFloatingActionButton forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
+        Button Back = findViewById(R.id.Back);
 
-        Button Back= findViewById(R.id.Back);
+        // Back button
         Back.setOnClickListener(v -> {
             startActivity(new Intent(this, MainActivity.class));
             finish();
@@ -64,71 +68,84 @@ public class Login extends AppCompatActivity {
 
         // Login button
         loginButton.setOnClickListener(v -> {
-            String inputUser = loginUsername.getText().toString().trim();
+            String inputEmail = loginEmail.getText().toString().trim();
             String inputPass = loginPassword.getText().toString().trim();
 
             SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-            String savedUser = prefs.getString("username", "");
+            String savedEmail = prefs.getString("email", "");
             String savedPass = prefs.getString("password", "");
 
-            if (inputUser.equals(savedUser) && inputPass.equals(savedPass)) {
+            if (inputEmail.equals(savedEmail) && inputPass.equals(savedPass)) {
+                // Save login state
+                if (rememberMeCheckBox.isChecked()) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("rememberMe", true);
+                    editor.apply();
+                }
+
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, MyPage.class));
                 finish();
             } else {
-                Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Wrong email or password", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Forgot password
+        // Forgot password button
         forgotPasswordButton.setOnClickListener(v -> {
             startActivity(new Intent(this, ResetPinActivity.class));
         });
+
+        // Auto-fill
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        if (prefs.getBoolean("rememberMe", false)) {
+            loginEmail.setText(prefs.getString("email", ""));
+            loginPassword.setText(prefs.getString("password", ""));
+            rememberMeCheckBox.setChecked(true);
+        }
     }
-//    public void LoginUser(View v) {
-//        String email = emailInput.getText().toString();
-//        String password = passwordInput.getText().toString();
-//
-//        new Thread(() -> {
-//            try {
-//                URL url = new URL("https://confirmed-sassy-trade.glitch.me/login");
-//                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-//                conn.setRequestMethod("POST");
-//                conn.setRequestProperty("Content-type", "application/json");
-//                conn.setDoOutput(true);
-//                String jsonLoginString = String.format(
-//                        "{\"email\":\"%s\",\"password\":\"%s\"}", email, password
-//                );
-//                try {
-//                    OutputStream os = conn.getOutputStream()) {
-//                        byte[] input =jsonLoginString.getBytes("utf-8");
-//                        os.write(input, 0, input.length);
-//                    }
-//                }
-//                int responseCode = conn.getResponseCode();
-//                InputStream is = (responseCode < HttpsURLConnection.HTTP_BAD_REQUEST)
-//                        ? conn.getInputStream()
-//                        : conn.getErrorStream();
-//
-//                BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
-//                StringBuilder response = new StringBuilder();
-//                String line;
-//
-//                while ((line = br.readLine()) != null) {
-//                    response.append(line.trim());
-//                }
-//
-//                String finalResponse = response.toString();
-//
-//                runOnUiThread(() -> {
-//                    Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
-//                });
-//            } catch (Exception e){
-//                e.printStackTrace();
-//                runOnUiThread(() ->
-//                        Toast.makeText(getApplicationContext(), "エラー： " + e.getMessage(), Toast.LENGTH_LONG).show()
-//                );
-//            }
-//        }).start();
-//    }
+    public void LoginUser(View v) {
+        String email = loginEmail.getText().toString();
+        String password = loginPassword.getText().toString();
+
+        new Thread(() -> {
+            try {
+                URL url = new URL("https://confirmed-sassy-trade.glitch.me/login");
+                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-type", "application/json");
+                conn.setDoOutput(true);
+                String jsonLoginString = String.format(
+                        "{\"email\":\"%s\",\"password\":\"%s\"}", email, password
+                );
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonLoginString.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+                int responseCode = conn.getResponseCode();
+                InputStream is = (responseCode < HttpsURLConnection.HTTP_BAD_REQUEST)
+                        ? conn.getInputStream()
+                        : conn.getErrorStream();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+                StringBuilder response = new StringBuilder();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    response.append(line.trim());
+                }
+
+                String finalResponse = response.toString();
+
+                runOnUiThread(() -> {
+                    Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
+                });
+            } catch (Exception e){
+                e.printStackTrace();
+                runOnUiThread(() ->
+                        Toast.makeText(getApplicationContext(), "エラー： " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+        }).start();
+    }
 }

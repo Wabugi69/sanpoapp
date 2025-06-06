@@ -25,8 +25,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Register extends AppCompatActivity {
 
-    EditText usernameInput, passwordInput;
-    Button registerButton, alreadyAccountButton;
+    EditText emailInput, usernameInput, passwordInput;
     ImageView togglePasswordVisibility;
     boolean isPasswordVisible = false;
 
@@ -35,20 +34,21 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        emailInput = findViewById(R.id.loginEmail);
         usernameInput = findViewById(R.id.usernameInput);
         passwordInput = findViewById(R.id.passwordInput);
         togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
 
-        ExtendedFloatingActionButton  registerButton = findViewById(R.id. registerButton);
-        ExtendedFloatingActionButton alreadyAccountButton = findViewById(R.id. alreadyAccountButton );
+        ExtendedFloatingActionButton registerButton = findViewById(R.id.registerButton);
+        ExtendedFloatingActionButton alreadyAccountButton = findViewById(R.id.alreadyAccountButton);
 
-        Button BacktoMain = findViewById(R.id.BacktoMain);
-        BacktoMain.setOnClickListener(v -> {
+        Button backToMain = findViewById(R.id.BacktoMain);
+        backToMain.setOnClickListener(v -> {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
-        // Toggle password
+        // Toggle password visibility
         togglePasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
                 passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -63,86 +63,89 @@ public class Register extends AppCompatActivity {
 
         // Register new account
         registerButton.setOnClickListener(v -> {
-            String username = usernameInput.getText().toString();
-            String password = passwordInput.getText().toString();
-
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Input username or password", Toast.LENGTH_SHORT).show();
-            } else {
-                SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("username", username);
-                editor.putString("password", password);
-                editor.apply();
-
-                Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, Login.class));
-                finish();
-            }
-        });
-
-        // Use existing account
-        alreadyAccountButton.setOnClickListener(v -> {
-            SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-            String savedUsername = prefs.getString("username", null);
-            String savedPassword = prefs.getString("password", null);
-
-            if (savedUsername != null && savedPassword != null) {
-                startActivity(new Intent(this, Login.class));
-                finish();
-            } else {
-                Toast.makeText(this, "No existing account found", Toast.LENGTH_SHORT).show();
-            }
+            RegisterUser(v);
+//            String email = emailInput.getText().toString().trim();
+//            String username = usernameInput.getText().toString().trim();
+//            String password = passwordInput.getText().toString().trim();
+//
+//            if (email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+//                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+//            } else {
+//                SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = prefs.edit();
+//                editor.putString("email", email);
+//                editor.putString("username", username);
+//                editor.putString("password", password);
+//                editor.apply();
+//
+//                Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(this, Login.class));
+//                finish();
+//            }
+//        });
+//
+//        // Use existing account
+//        alreadyAccountButton.setOnClickListener(v -> {
+//            SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+//            String savedUsername = prefs.getString("username", null);
+//            String savedPassword = prefs.getString("password", null);
+//
+//            if (savedUsername != null && savedPassword != null) {
+//                startActivity(new Intent(this, Login.class));
+//                finish();
+//            } else {
+//                Toast.makeText(this, "No existing account found", Toast.LENGTH_SHORT).show();
+//            }
         });
     }
 
-//    public void RegisterUser(View v) {
-//        String newEmail, newUsername, newPassword;
-//
-//        newEmail = emailInput.getText().toString();
-//        newUsername = usernameInput.getText().toString();
-//        newPassword = passwordInput.getText().toString();
-//
-//        new Thread(() -> {
-//            try {
-//                URL url = new URL("https://confirmed-sassy-trade.glitch.me/register");
-//                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-//                conn.setRequestMethod("POST");
-//                conn.setRequestProperty("Content-Type", "application/json");
-//                conn.setDoOutput(true);
-//
-//                String jsonInputString = String.format(
-//                        "{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}", newEmail,  newPassword, newUsername
-//                );
-//
-//                try (OutputStream os = conn.getOutputStream()) {
-//                    byte[] input = jsonInputString.getBytes("utf-8");
-//                    os.write(input, 0, input.length);
-//                }
-//                int responseCode = conn.getResponseCode();
-//                InputStream is = (responseCode < HttpsURLConnection.HTTP_BAD_REQUEST)
-//                        ? conn.getInputStream()
-//                        : conn.getErrorStream();
-//
-//                BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
-//                StringBuilder response = new StringBuilder();
-//                String line;
-//
-//                while ((line = br.readLine()) != null) {
-//                    response.append(line.trim());
-//                }
-//
-//                String finalResponse = response.toString();
-//
-//                runOnUiThread(() -> {
-//                    Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
-//                });
-//            } catch (Exception e){
-//                e.printStackTrace();
-//                runOnUiThread(() ->
-//                        Toast.makeText(getApplicationContext(), "エラー： " + e.getMessage(), Toast.LENGTH_LONG).show()
-//                );
-//            }
-//        }).start();
-//    }
+    public void RegisterUser(View v) {
+        String newEmail, newUsername, newPassword;
+
+        newEmail = emailInput.getText().toString();
+        newUsername = usernameInput.getText().toString();
+        newPassword = passwordInput.getText().toString();
+
+        new Thread(() -> {
+            try {
+                URL url = new URL("https://confirmed-sassy-trade.glitch.me/register");
+                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                String jsonInputString = String.format(
+                        "{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}", newEmail,  newPassword, newUsername
+                );
+
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonInputString.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+                int responseCode = conn.getResponseCode();
+                InputStream is = (responseCode < HttpsURLConnection.HTTP_BAD_REQUEST)
+                        ? conn.getInputStream()
+                        : conn.getErrorStream();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+                StringBuilder response = new StringBuilder();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    response.append(line.trim());
+                }
+
+                String finalResponse = response.toString();
+
+                runOnUiThread(() -> {
+                    Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
+                });
+            } catch (Exception e){
+                e.printStackTrace();
+                runOnUiThread(() ->
+                        Toast.makeText(getApplicationContext(), "エラー： " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+        }).start();
+    }
 }
