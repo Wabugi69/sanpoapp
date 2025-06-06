@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +15,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class Login extends AppCompatActivity {
 
@@ -76,4 +85,50 @@ public class Login extends AppCompatActivity {
             startActivity(new Intent(this, ResetPinActivity.class));
         });
     }
+//    public void LoginUser(View v) {
+//        String email = emailInput.getText().toString();
+//        String password = passwordInput.getText().toString();
+//
+//        new Thread(() -> {
+//            try {
+//                URL url = new URL("https://confirmed-sassy-trade.glitch.me/login");
+//                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+//                conn.setRequestMethod("POST");
+//                conn.setRequestProperty("Content-type", "application/json");
+//                conn.setDoOutput(true);
+//                String jsonLoginString = String.format(
+//                        "{\"email\":\"%s\",\"password\":\"%s\"}", email, password
+//                );
+//                try {
+//                    OutputStream os = conn.getOutputStream()) {
+//                        byte[] input =jsonLoginString.getBytes("utf-8");
+//                        os.write(input, 0, input.length);
+//                    }
+//                }
+//                int responseCode = conn.getResponseCode();
+//                InputStream is = (responseCode < HttpsURLConnection.HTTP_BAD_REQUEST)
+//                        ? conn.getInputStream()
+//                        : conn.getErrorStream();
+//
+//                BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+//                StringBuilder response = new StringBuilder();
+//                String line;
+//
+//                while ((line = br.readLine()) != null) {
+//                    response.append(line.trim());
+//                }
+//
+//                String finalResponse = response.toString();
+//
+//                runOnUiThread(() -> {
+//                    Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
+//                });
+//            } catch (Exception e){
+//                e.printStackTrace();
+//                runOnUiThread(() ->
+//                        Toast.makeText(getApplicationContext(), "エラー： " + e.getMessage(), Toast.LENGTH_LONG).show()
+//                );
+//            }
+//        }).start();
+//    }
 }

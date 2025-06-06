@@ -95,6 +95,7 @@ public class Register extends AppCompatActivity {
             }
         });
     }
+
 //    public void RegisterUser(View v) {
 //        String newEmail, newUsername, newPassword;
 //
