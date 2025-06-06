@@ -16,8 +16,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 public class Register extends AppCompatActivity {
 
-    EditText usernameInput, passwordInput;
-    Button registerButton, alreadyAccountButton;
+    EditText loginEmail, usernameInput, passwordInput;
     ImageView togglePasswordVisibility;
     boolean isPasswordVisible = false;
 
@@ -26,20 +25,21 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        loginEmail = findViewById(R.id.loginEmail);
         usernameInput = findViewById(R.id.usernameInput);
         passwordInput = findViewById(R.id.passwordInput);
         togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
 
-        ExtendedFloatingActionButton  registerButton = findViewById(R.id. registerButton);
-        ExtendedFloatingActionButton alreadyAccountButton = findViewById(R.id. alreadyAccountButton );
+        ExtendedFloatingActionButton registerButton = findViewById(R.id.registerButton);
+        ExtendedFloatingActionButton alreadyAccountButton = findViewById(R.id.alreadyAccountButton);
 
-        Button BacktoMain = findViewById(R.id.BacktoMain);
-        BacktoMain.setOnClickListener(v -> {
+        Button backToMain = findViewById(R.id.BacktoMain);
+        backToMain.setOnClickListener(v -> {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
-        // Toggle password
+        // Toggle password visibility
         togglePasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
                 passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -54,14 +54,16 @@ public class Register extends AppCompatActivity {
 
         // Register new account
         registerButton.setOnClickListener(v -> {
-            String username = usernameInput.getText().toString();
-            String password = passwordInput.getText().toString();
+            String email = loginEmail.getText().toString().trim();
+            String username = usernameInput.getText().toString().trim();
+            String password = passwordInput.getText().toString().trim();
 
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Input username or password", Toast.LENGTH_SHORT).show();
+            if (email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             } else {
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("email", email);
                 editor.putString("username", username);
                 editor.putString("password", password);
                 editor.apply();
