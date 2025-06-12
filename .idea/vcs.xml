@@ -2,9 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-<<<<<<< HEAD
-=======
-    <mapping directory="$PROJECT_DIR$/sanpoapp" vcs="Git" />
->>>>>>> e3f3371147ad90cb1fe42071722dbed1349eaeee
   </component>
 </project>

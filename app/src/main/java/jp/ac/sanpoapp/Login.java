@@ -31,6 +31,7 @@ public class Login extends AppCompatActivity {
     ImageView togglePasswordVisibility;
     CheckBox rememberMeCheckBox;
     boolean isPasswordVisible = false;
+    PrefsManager prefs = new PrefsManager(this);
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -68,27 +69,28 @@ public class Login extends AppCompatActivity {
 
         // Login button
         loginButton.setOnClickListener(v -> {
-            String inputEmail = loginEmail.getText().toString().trim();
-            String inputPass = loginPassword.getText().toString().trim();
-
-            SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-            String savedEmail = prefs.getString("email", "");
-            String savedPass = prefs.getString("password", "");
-
-            if (inputEmail.equals(savedEmail) && inputPass.equals(savedPass)) {
-                // Save login state
-                if (rememberMeCheckBox.isChecked()) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean("rememberMe", true);
-                    editor.apply();
-                }
-
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, MyPage.class));
-                finish();
-            } else {
-                Toast.makeText(this, "Wrong email or password", Toast.LENGTH_SHORT).show();
-            }
+            LoginUser(v);
+//            String inputEmail = loginEmail.getText().toString().trim();
+//            String inputPass = loginPassword.getText().toString().trim();
+//
+//            SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+//            String savedEmail = prefs.getString("email", "");
+//            String savedPass = prefs.getString("password", "");
+//
+//            if (inputEmail.equals(savedEmail) && inputPass.equals(savedPass)) {
+//                // Save login state
+//                if (rememberMeCheckBox.isChecked()) {
+//                    SharedPreferences.Editor editor = prefs.edit();
+//                    editor.putBoolean("rememberMe", true);
+//                    editor.apply();
+//                }
+//
+//                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(this, MyPage.class));
+//                finish();
+//            } else {
+//                Toast.makeText(this, "Wrong email or password", Toast.LENGTH_SHORT).show();
+//            }
         });
 
         // Forgot password button
@@ -104,12 +106,15 @@ public class Login extends AppCompatActivity {
             rememberMeCheckBox.setChecked(true);
         }
     }
+
+    //ユーザーログイン機能
     public void LoginUser(View v) {
         String email = loginEmail.getText().toString();
         String password = loginPassword.getText().toString();
 
         new Thread(() -> {
             try {
+                //APIに接続
                 URL url = new URL("https://confirmed-sassy-trade.glitch.me/login");
                 HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -122,11 +127,13 @@ public class Login extends AppCompatActivity {
                     byte[] input = jsonLoginString.getBytes("utf-8");
                     os.write(input, 0, input.length);
                 }
+                //APIの返事を聞く
                 int responseCode = conn.getResponseCode();
                 InputStream is = (responseCode < HttpsURLConnection.HTTP_BAD_REQUEST)
                         ? conn.getInputStream()
                         : conn.getErrorStream();
 
+                //APIからのトーケンを受け取る
                 BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
                 StringBuilder response = new StringBuilder();
                 String line;
@@ -134,12 +141,14 @@ public class Login extends AppCompatActivity {
                 while ((line = br.readLine()) != null) {
                     response.append(line.trim());
                 }
+                //SharedPreferencesでトーケンを共有化する
+                prefs.saveToken(response.toString());
+                startActivity(new Intent(this, MyPage.class));
 
-                String finalResponse = response.toString();
-
-                runOnUiThread(() -> {
-                    Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
-                });
+                //String finalResponse = response.toString();
+//                runOnUiThread(() -> {
+//                    Toast.makeText(getApplicationContext(), "ログインできました", Toast.LENGTH_LONG).show();
+//                });
             } catch (Exception e){
                 e.printStackTrace();
                 runOnUiThread(() ->
