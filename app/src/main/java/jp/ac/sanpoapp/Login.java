@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,7 +33,8 @@ public class Login extends AppCompatActivity {
     ImageView togglePasswordVisibility;
     CheckBox rememberMeCheckBox;
     boolean isPasswordVisible = false;
-    PrefsManager prefs = new PrefsManager(this);
+    PrefsManager prefs;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -47,10 +50,11 @@ public class Login extends AppCompatActivity {
         ExtendedFloatingActionButton loginButton = findViewById(R.id.loginButton);
         ExtendedFloatingActionButton forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
         Button Back = findViewById(R.id.Back);
+        prefs = new PrefsManager(this);
 
         // Back button
         Back.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
+//            startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
@@ -99,13 +103,14 @@ public class Login extends AppCompatActivity {
         });
 
         // Auto-fill
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        if (prefs.getBoolean("rememberMe", false)) {
-            loginEmail.setText(prefs.getString("email", ""));
-            loginPassword.setText(prefs.getString("password", ""));
-            rememberMeCheckBox.setChecked(true);
+//        SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+//        if (prefs.getBoolean("rememberMe", false)) {
+//            loginEmail.setText(prefs.getString("email", ""));
+//            loginPassword.setText(prefs.getString("password", ""));
+//            rememberMeCheckBox.setChecked(true);
         }
-    }
+
+
 
     //ユーザーログイン機能
     public void LoginUser(View v) {
@@ -141,14 +146,20 @@ public class Login extends AppCompatActivity {
                 while ((line = br.readLine()) != null) {
                     response.append(line.trim());
                 }
-                //SharedPreferencesでトーケンを共有化する
-                prefs.saveToken(response.toString());
-                startActivity(new Intent(this, MyPage.class));
+                JSONObject json = new JSONObject(response.toString());
+                String finalResponse = json.getString("message");
 
-                //String finalResponse = response.toString();
-//                runOnUiThread(() -> {
-//                    Toast.makeText(getApplicationContext(), "ログインできました", Toast.LENGTH_LONG).show();
-//                });
+                //SharedPreferencesでトーケンを共有化する
+                if (json.has("token")) {
+                    String token = json.getString("token");
+                    String username = json.getString("username");
+                    prefs.saveToken(token, username);
+                    startActivity(new Intent(this, MyPage.class));
+                }
+
+                runOnUiThread(() -> {
+                    Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
+                });
             } catch (Exception e){
                 e.printStackTrace();
                 runOnUiThread(() ->

@@ -16,6 +16,7 @@ public class MyPage extends AppCompatActivity {
 
     TextView accountInfo;
     Button backToMyPage,myPageButton;
+    PrefsManager prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +35,19 @@ public class MyPage extends AppCompatActivity {
             finish();
         });
 
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        String username = prefs.getString("username", null);
+        prefs = new PrefsManager(this);
 
-        if (username == null) {
+        if (prefs.getToken() == null) {
             Toast.makeText(this, "No user logged in.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, Login.class));
             finish();
             return;
         }
 
-        accountInfo.setText("Logged in as: " + username);
+        accountInfo.setText("Logged in as: ");
 
         logoutButton.setOnClickListener(v -> {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("isLoggedIn", false);
-            editor.apply();
+            prefs.clearToken();
 
             Intent intent = new Intent(MyPage.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -58,9 +56,7 @@ public class MyPage extends AppCompatActivity {
         });
 
         deleteAccountButton.setOnClickListener(v -> {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.clear();
-            editor.apply();
+            prefs.clearToken();
 
             Toast.makeText(this, "Account deleted successfully.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MyPage.this, Register.class);

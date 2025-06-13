@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PrefsManager prefs = new PrefsManager(this);
-
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        PrefsManager prefs = new PrefsManager(this);
         ExtendedFloatingActionButton registerButton = findViewById(R.id.registerButton);
         ExtendedFloatingActionButton existingAccountButton = findViewById(R.id.alreadyAccountButton);
 
@@ -39,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, MyPage.class));
         }
         else
-
-        registerButton.setOnClickListener(v -> {
+            registerButton.setOnClickListener(v -> {
             startActivity(new Intent(this,Register.class));
         });
 
