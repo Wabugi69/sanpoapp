@@ -25,42 +25,42 @@ public class RemoteAPI {
         void onError(String error);
     }
 
-    public void login(String email, String password, String username, AuthCallback callback) {
-        new Thread(() -> {
-            try {
-                URL url = new URL(BASE_URL + "/login");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setDoOutput(true);
-
-                JSONObject json = new JSONObject();
-                json.put("email", email);
-                json.put("password", password);
-                json.put("username", username);
-
-                OutputStream os = conn.getOutputStream();
-                os.write(json.toString().getBytes());
-                os.flush();
-                os.close();
-
-                int responseCode = conn.getResponseCode();
-                InputStream is = responseCode == 200 ? conn.getInputStream() : conn.getErrorStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                StringBuilder result = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) result.append(line);
-
-                if (responseCode == 200)
-                    callback.onSuccess(result.toString());
-                else
-                    callback.onError("Login failed: " + result);
-
-            } catch (Exception e) {
-                callback.onError("Network error: " + e.getMessage());
-            }
-        }).start();
-    }
+//    public void login(String email, String password, String username, AuthCallback callback) {
+//        new Thread(() -> {
+//            try {
+//                URL url = new URL(BASE_URL + "/login");
+//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//                conn.setRequestMethod("POST");
+//                conn.setRequestProperty("Content-Type", "application/json");
+//                conn.setDoOutput(true);
+//
+//                JSONObject json = new JSONObject();
+//                json.put("email", email);
+//                json.put("password", password);
+//                json.put("username", username);
+//
+//                OutputStream os = conn.getOutputStream();
+//                os.write(json.toString().getBytes());
+//                os.flush();
+//                os.close();
+//
+//                int responseCode = conn.getResponseCode();
+//                InputStream is = responseCode == 200 ? conn.getInputStream() : conn.getErrorStream();
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+//                StringBuilder result = new StringBuilder();
+//                String line;
+//                while ((line = reader.readLine()) != null) result.append(line);
+//
+//                if (responseCode == 200)
+//                    callback.onSuccess(result.toString());
+//                else
+//                    callback.onError("Login failed: " + result);
+//
+//            } catch (Exception e) {
+//                callback.onError("Network error: " + e.getMessage());
+//            }
+//        }).start();
+//    }
 
 
     public interface OnDataReceivedListener {
@@ -128,5 +128,9 @@ public class RemoteAPI {
             this.email = email;
             this.username = username;
         }
+    }
+
+    public static String getURL(){
+        return BASE_URL;
     }
 }

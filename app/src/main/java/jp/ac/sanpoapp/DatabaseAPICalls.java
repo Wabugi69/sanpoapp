@@ -1,5 +1,8 @@
 package jp.ac.sanpoapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.ArrayList;
 
 public class DatabaseAPICalls {

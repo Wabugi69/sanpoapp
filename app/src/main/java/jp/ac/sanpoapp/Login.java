@@ -74,41 +74,13 @@ public class Login extends AppCompatActivity {
         // Login button
         loginButton.setOnClickListener(v -> {
             LoginUser(v);
-//            String inputEmail = loginEmail.getText().toString().trim();
-//            String inputPass = loginPassword.getText().toString().trim();
-//
-//            SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-//            String savedEmail = prefs.getString("email", "");
-//            String savedPass = prefs.getString("password", "");
-//
-//            if (inputEmail.equals(savedEmail) && inputPass.equals(savedPass)) {
-//                // Save login state
-//                if (rememberMeCheckBox.isChecked()) {
-//                    SharedPreferences.Editor editor = prefs.edit();
-//                    editor.putBoolean("rememberMe", true);
-//                    editor.apply();
-//                }
-//
-//                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(this, MyPage.class));
-//                finish();
-//            } else {
-//                Toast.makeText(this, "Wrong email or password", Toast.LENGTH_SHORT).show();
-//            }
         });
 
         // Forgot password button
         forgotPasswordButton.setOnClickListener(v -> {
             startActivity(new Intent(this, ResetPinActivity.class));
         });
-
-        // Auto-fill
-//        SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-//        if (prefs.getBoolean("rememberMe", false)) {
-//            loginEmail.setText(prefs.getString("email", ""));
-//            loginPassword.setText(prefs.getString("password", ""));
-//            rememberMeCheckBox.setChecked(true);
-        }
+    }
 
 
 
@@ -153,8 +125,10 @@ public class Login extends AppCompatActivity {
                 if (json.has("token")) {
                     String token = json.getString("token");
                     String username = json.getString("username");
-                    prefs.saveToken(token, username);
+                    int points = json.getInt("points");
+                    prefs.saveToken(token, username, points);
                     startActivity(new Intent(this, MyPage.class));
+                    finish();
                 }
 
                 runOnUiThread(() -> {

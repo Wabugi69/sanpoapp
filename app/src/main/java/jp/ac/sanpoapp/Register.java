@@ -136,7 +136,7 @@ public class Register extends AppCompatActivity {
                 }
 
                 String finalResponse = response.toString();
-
+                //TODO UPON ACCOUNT CREATION, LOGIN USER AND SHOW A WELCOME SCREEN
                 runOnUiThread(() -> {
                     Toast.makeText(getApplicationContext(), finalResponse, Toast.LENGTH_LONG).show();
                 });

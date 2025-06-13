@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
         ExtendedFloatingActionButton registerButton = findViewById(R.id.registerButton);
         ExtendedFloatingActionButton existingAccountButton = findViewById(R.id.alreadyAccountButton);
 
-        if (prefs.getToken() != null){
-            startActivity(new Intent(this, MyPage.class));
-        }
-        else
+//        if (prefs.getToken() != null){
+//            startActivity(new Intent(this, MyPage.class));
+//        }
+//        else
             registerButton.setOnClickListener(v -> {
             startActivity(new Intent(this,Register.class));
         });
