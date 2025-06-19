@@ -1,6 +1,5 @@
 package jp.ac.sanpoapp;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +22,6 @@ public class Login extends AppCompatActivity {
     CheckBox rememberMeCheckBox;
     boolean isPasswordVisible = false;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +72,11 @@ public class Login extends AppCompatActivity {
                     editor.apply();
                 }
 
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "ログインしました。", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, MyPage.class));
                 finish();
             } else {
-                Toast.makeText(this, "Wrong email or password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "入力が間違っています！", Toast.LENGTH_SHORT).show();
             }
         });
 
