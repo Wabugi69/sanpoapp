@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.steps), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         ExtendedFloatingActionButton registerButton = findViewById(R.id.registerButton);
         ExtendedFloatingActionButton existingAccountButton = findViewById(R.id.alreadyAccountButton);
+
 
         registerButton.setOnClickListener(v -> {
             startActivity(new Intent(this,Register.class));

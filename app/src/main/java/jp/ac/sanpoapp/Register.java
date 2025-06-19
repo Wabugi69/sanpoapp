@@ -33,14 +33,13 @@ public class Register extends AppCompatActivity {
         ExtendedFloatingActionButton registerButton = findViewById(R.id.registerButton);
         ExtendedFloatingActionButton alreadyAccountButton = findViewById(R.id.alreadyAccountButton);
 
-        //back to main
         Button backToMain = findViewById(R.id.BacktoMain);
         backToMain.setOnClickListener(v -> {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
-        // toggle password visibility
+        // Toggle password visibility
         togglePasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
                 passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -53,13 +52,14 @@ public class Register extends AppCompatActivity {
             passwordInput.setSelection(passwordInput.length());
         });
 
+        // Register new account
         registerButton.setOnClickListener(v -> {
             String email = loginEmail.getText().toString().trim();
             String username = usernameInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
 
             if (email.isEmpty() || username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "全ての項目に入力してください！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             } else {
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -68,13 +68,13 @@ public class Register extends AppCompatActivity {
                 editor.putString("password", password);
                 editor.apply();
 
-                Toast.makeText(this, "アカウントを作成しました。", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, Login.class));
                 finish();
             }
         });
 
-        // use existing account
+        // Use existing account
         alreadyAccountButton.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
             String savedUsername = prefs.getString("username", null);
@@ -84,7 +84,7 @@ public class Register extends AppCompatActivity {
                 startActivity(new Intent(this, Login.class));
                 finish();
             } else {
-                Toast.makeText(this, "アカウントが見つかりませんでした！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No existing account found", Toast.LENGTH_SHORT).show();
             }
         });
     }

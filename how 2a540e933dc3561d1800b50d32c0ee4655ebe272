@@ -1,0 +1,747 @@
+[33mcommit 2a540e933dc3561d1800b50d32c0ee4655ebe272[m
+Author: Wabugi69 <kevin.abercrombie@wsu.edu>
+Date:   Fri May 30 11:02:48 2025 +0900
+
+    登録機能を追加した
+
+[1mdiff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..65023d9[m
+[1m--- /dev/null[m
+[1m+++ b/.idea/deploymentTargetSelector.xml[m
+[36m@@ -0,0 +1,18 @@[m
+[32m+[m[32m<?xml version="1.0" encoding="UTF-8"?>[m
+[32m+[m[32m<project version="4">[m
+[32m+[m[32m  <component name="deploymentTargetSelector">[m
+[32m+[m[32m    <selectionStates>[m
+[32m+[m[32m      <SelectionState runConfigName="app">[m
+[32m+[m[32m        <option name="selectionMode" value="DROPDOWN" />[m
+[32m+[m[32m        <DropdownSelection timestamp="2025-05-15T04:51:26.574319200Z">[m
+[32m+[m[32m          <Target type="DEFAULT_BOOT">[m
+[32m+[m[32m            <handle>[m
+[32m+[m[32m              <DeviceId pluginId="PhysicalDevice" identifier="serial=R3CW10VAJXF" />[m
+[32m+[m[32m            </handle>[m
+[32m+[m[32m          </Target>[m
+[32m+[m[32m        </DropdownSelection>[m
+[32m+[m[32m        <DialogSelection />[m
+[32m+[m[32m      </SelectionState>[m
+[32m+[m[32m    </selectionStates>[m
+[32m+[m[32m  </component>[m
+[32m+[m[32m</project>[m
+\ No newline at end of file[m
+[1mdiff --git a/.idea/gradle.xml b/.idea/gradle.xml[m
+[1mindex 32522c1..0897082 100644[m
+[1m--- a/.idea/gradle.xml[m
+[1m+++ b/.idea/gradle.xml[m
+[36m@@ -1,5 +1,6 @@[m
+ <?xml version="1.0" encoding="UTF-8"?>[m
+ <project version="4">[m
+[32m+[m[32m  <component name="GradleMigrationSettings" migrationVersion="1" />[m
+   <component name="GradleSettings">[m
+     <option name="linkedExternalProjectsSettings">[m
+       <GradleProjectSettings>[m
+[1mdiff --git a/.idea/kotlinc.xml b/.idea/kotlinc.xml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..148fdd2[m
+[1m--- /dev/null[m
+[1m+++ b/.idea/kotlinc.xml[m
+[36m@@ -0,0 +1,6 @@[m
+[32m+[m[32m<?xml version="1.0" encoding="UTF-8"?>[m
+[32m+[m[32m<project version="4">[m
+[32m+[m[32m  <component name="KotlinJpsPluginSettings">[m
+[32m+[m[32m    <option name="version" value="1.9.24" />[m
+[32m+[m[32m  </component>[m
+[32m+[m[32m</project>[m
+\ No newline at end of file[m
+[1mdiff --git a/.idea/misc.xml b/.idea/misc.xml[m
+[1mindex 6ba4969..8978d23 100644[m
+[1m--- a/.idea/misc.xml[m
+[1m+++ b/.idea/misc.xml[m
+[36m@@ -1,7 +1,6 @@[m
+[31m-<?xml version="1.0" encoding="UTF-8"?>[m
+ <project version="4">[m
+   <component name="ExternalStorageConfigurationManager" enabled="true" />[m
+[31m-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17">[m
+[32m+[m[32m  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">[m
+     <output url="file://$PROJECT_DIR$/build/classes" />[m
+   </component>[m
+   <component name="ProjectType">[m
+[1mdiff --git a/.idea/vcs.xml b/.idea/vcs.xml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..94a25f7[m
+[1m--- /dev/null[m
+[1m+++ b/.idea/vcs.xml[m
+[36m@@ -0,0 +1,6 @@[m
+[32m+[m[32m<?xml version="1.0" encoding="UTF-8"?>[m
+[32m+[m[32m<project version="4">[m
+[32m+[m[32m  <component name="VcsDirectoryMappings">[m
+[32m+[m[32m    <mapping directory="$PROJECT_DIR$" vcs="Git" />[m
+[32m+[m[32m  </component>[m
+[32m+[m[32m</project>[m
+\ No newline at end of file[m
+[1mdiff --git a/app/build.gradle.kts b/app/build.gradle.kts[m
+[1mindex dcdbeff..52c44da 100644[m
+[1m--- a/app/build.gradle.kts[m
+[1m+++ b/app/build.gradle.kts[m
+[36m@@ -1,10 +1,11 @@[m
+ plugins {[m
+     alias(libs.plugins.android.application)[m
+[32m+[m[32m    alias(libs.plugins.kotlin.android)[m
+ }[m
+ [m
+ android {[m
+     namespace = "jp.ac.sanpoapp"[m
+[31m-    compileSdk = 34[m
+[32m+[m[32m    compileSdk = 35[m
+ [m
+     defaultConfig {[m
+         applicationId = "jp.ac.sanpoapp"[m
+[36m@@ -29,6 +30,9 @@[m [mandroid {[m
+         sourceCompatibility = JavaVersion.VERSION_1_8[m
+         targetCompatibility = JavaVersion.VERSION_1_8[m
+     }[m
+[32m+[m[32m    kotlinOptions {[m
+[32m+[m[32m        jvmTarget = "1.8"[m
+[32m+[m[32m    }[m
+ }[m
+ [m
+ dependencies {[m
+[36m@@ -37,6 +41,8 @@[m [mdependencies {[m
+     implementation(libs.material)[m
+     implementation(libs.activity)[m
+     implementation(libs.constraintlayout)[m
+[32m+[m[32m    implementation(files("C:\\Users\\2240778\\Desktop\\Catapp\\mysql-connector-j-9.3.0\\mysql-connector-j-9.3.0.jar"))[m
+[32m+[m[32m    implementation(libs.core.ktx)[m
+     testImplementation(libs.junit)[m
+     androidTestImplementation(libs.ext.junit)[m
+     androidTestImplementation(libs.espresso.core)[m
+[1mdiff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml[m
+[1mindex 5615f87..9bacaa4 100644[m
+[1m--- a/app/src/main/AndroidManifest.xml[m
+[1m+++ b/app/src/main/AndroidManifest.xml[m
+[36m@@ -1,7 +1,11 @@[m
+ <?xml version="1.0" encoding="utf-8"?>[m
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"[m
+[32m+[m
+     xmlns:tools="http://schemas.android.com/tools">[m
+ [m
+[32m+[m[32m    <uses-permission android:name="android.permission.INTERNET" />[m
+[32m+[m[32m    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />[m
+[32m+[m
+     <application[m
+         android:allowBackup="true"[m
+         android:dataExtractionRules="@xml/data_extraction_rules"[m
+[36m@@ -13,14 +17,17 @@[m
+         android:theme="@style/Theme.Sanpoapp"[m
+         tools:targetApi="31">[m
+         <activity[m
+[31m-            android:name=".MainActivity"[m
+[32m+[m[32m            android:name=".LoginTest"[m
+             android:exported="true">[m
+             <intent-filter>[m
+                 <action android:name="android.intent.action.MAIN" />[m
+[31m-[m
+                 <category android:name="android.intent.category.LAUNCHER" />[m
+             </intent-filter>[m
+         </activity>[m
+[32m+[m
+[32m+[m[32m        <activity[m
+[32m+[m[32m            android:name=".MainActivity"[m
+[32m+[m[32m            android:exported="false" />[m
+     </application>[m
+ [m
+ </manifest>[m
+\ No newline at end of file[m
+[1mdiff --git a/app/src/main/java/jp/ac/sanpoapp/AppConstants.java b/app/src/main/java/jp/ac/sanpoapp/AppConstants.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..c38d15a[m
+[1m--- /dev/null[m
+[1m+++ b/app/src/main/java/jp/ac/sanpoapp/AppConstants.java[m
+[36m@@ -0,0 +1,5 @@[m
+[32m+[m[32mpackage jp.ac.sanpoapp;[m
+[32m+[m
+[32m+[m[32mpublic class AppConstants {[m
+[32m+[m[32m    public static final String API_KEY = "BIGNUTS";[m
+[32m+[m[32m}[m
+[1mdiff --git a/app/src/main/java/jp/ac/sanpoapp/ConnectionManager.java b/app/src/main/java/jp/ac/sanpoapp/ConnectionManager.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..33baaa4[m
+[1m--- /dev/null[m
+[1m+++ b/app/src/main/java/jp/ac/sanpoapp/ConnectionManager.java[m
+[36m@@ -0,0 +1,34 @@[m
+[32m+[m[32mpackage jp.ac.sanpoapp;[m
+[32m+[m
+[32m+[m[32mimport android.net.ConnectivityManager;[m
+[32m+[m[32mimport android.net.Network;[m
+[32m+[m[32mimport android.net.NetworkCapabilities;[m
+[32m+[m
+[32m+[m[32mpublic class ConnectionManager {[m
+[32m+[m
+[32m+[m[32m    private final ConnectivityManager connectivityManager;[m
+[32m+[m
+[32m+[m[32m    public ConnectionManager(ConnectivityManager connectivityManager) {[m
+[32m+[m[32m        this.connectivityManager = connectivityManager;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void performAction(Runnable action) {[m
+[32m+[m[32m        if (hasValidInternetConnection()) {[m
+[32m+[m[32m            action.run();[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private boolean hasValidInternetConnection() {[m
+[32m+[m[32m        if (connectivityManager == null) return false;[m
+[32m+[m
+[32m+[m[32m        Network network = connectivityManager.getActiveNetwork();[m
+[32m+[m[32m        if (network == null) return false;[m
+[32m+[m
+[32m+[m[32m        NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);[m
+[32m+[m[32m        if (capabilities == null) return false;[m
+[32m+[m
+[32m+[m[32m        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||[m
+[32m+[m[32m                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||[m
+[32m+[m[32m                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/app/src/main/java/jp/ac/sanpoapp/DatabaseAPICalls.java b/app/src/main/java/jp/ac/sanpoapp/DatabaseAPICalls.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e79268e[m
+[1m--- /dev/null[m
+[1m+++ b/app/src/main/java/jp/ac/sanpoapp/DatabaseAPICalls.java[m
+[36m@@ -0,0 +1,28 @@[m
+[32m+[m[32mpackage jp.ac.sanpoapp;[m
+[32m+[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m
+[32m+[m[32mpublic class DatabaseAPICalls {[m
+[32m+[m
+[32m+[m[32m    public interface UsersCallback {[m
+[32m+[m[32m        void onSuccess(ArrayList<RemoteAPI.User> users);[m
+[32m+[m[32m        void onError(String errorMessage);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void fetchUsers(UsersCallback callback) {[m
+[32m+[m[32m        RemoteAPI api = new RemoteAPI();[m
+[32m+[m[32m        api.getUsers(new RemoteAPI.OnDataReceivedListener() {[m
+[32m+[m[32m            @Override[m
+[32m+[m[32m            public void onDataReceived(ArrayList<RemoteAPI.User> users) {[m
+[32m+[m[32m                // Pass data back to caller[m
+[32m+[m[32m                callback.onSuccess(users);[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            @Override[m
+[32m+[m[32m            public void onError(String errorMessage) {[m
+[32m+[m[32m                // Pass error back to caller[m
+[32m+[m[32m                callback.onError(errorMessage);[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/app/src/main/java/jp/ac/sanpoapp/LoginTest.java b/app/src/main/java/jp/ac/sanpoapp/LoginTest.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..92bee2d[m
+[1m--- /dev/null[m
+[1m+++ b/app/src/main/java/jp/ac/sanpoapp/LoginTest.java[m
+[36m@@ -0,0 +1,134 @@[m
+[32m+[m[32mpackage jp.ac.sanpoapp;[m
+[32m+[m
+[32m+[m[32mimport android.os.Bundle;[m
+[32m+[m[32mimport android.view.View;[m
+[32m+[m[32mimport android.widget.EditText;[m
+[32m+[m[32mimport android.widget.TextView;[m
+[32m+[m[32mimport android.widget.Toast;[m
+[32m+[m
+[32m+[m[32mimport androidx.activity.EdgeToEdge;[m
+[32m+[m[32mimport androidx.appcompat.app.AppCompatActivity;[m
+[32m+[m[32mimport androidx.core.graphics.Insets;[m
+[32m+[m[32mimport androidx.core.view.ViewCompat;[m
+[32m+[m[32mimport androidx.core.view.WindowInsetsCompat;[m
+[32m+[m
+[32m+[m[32mimport java.io.BufferedReader;[m
+[32m+[m[32mimport java.io.InputStream;[m
+[32m+[m[32mimport java.io.InputStreamReader;[m
+[32m+[m[32mimport java.io.OutputStream;[m
+[32m+[m[32mimport java.net.URL;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m
+[32m+[m[32mimport javax.net.ssl.HttpsURLConnection;[m
+[32m+[m
+[32m+[m[32mpublic class LoginTest extends AppCompatActivity {[m
+[32m+[m[32m    private TextView tx1, tx2, tx3;[m
+[32m+[m[32m    public EditText emailText, usernameText, passwordText;[m
+[32m+[m
+[32m+[m[32m    @Override[m
+[32m+[m[32m    protected void onCreate(Bundle savedInstanceState) {[m
+[32m+[m[32m        super.onCreate(savedInstanceState);[m
+[32m+[m[32m        EdgeToEdge.enable(this);[m
+[32m+[m[32m        setContentView(R.layout.activity_login_test);[m
+[32m+[m[32m        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {[m
+[32m+[m[32m            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());[m
+[32m+[m[32m            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);[m
+[32m+[m[32m            return insets;[m
+[32m+[m[32m        });[m
+[32m+[m[32m        emailText = findViewById(R.id.emailText);[m
+[32m+[m[32m        usernameText = findViewById(R.id.usernameText);[m
+[32m+[m[32m        passwordText = findViewById(R.id.passwordText);[m
+[32m+[m
+[32m+[m[32m        tx1 = findViewById(R.id.tx1);[m
+[32m+[m[32m        tx2 = findViewById(R.id.tx2);[m
+[32m+[m[32m        tx3 = findViewById(R.id.tx3);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    //TODO Write a code to test registration. You can currently register from the terminal[m
+[32m+[m
+[32m+[m[32m    public void RegisterUser(View v) {[m
+[32m+[m[32m        String newEmail, newUsername, newPassword;[m
+[32m+[m
+[32m+[m[32m        newEmail = emailText.getText().toString();[m
+[32m+[m[32m        newUsername = usernameText.getText().toString();[m
+[32m+[m[32m        newPassword = passwordText.getText().toString();[m
+[32m+[m
+[32m+[m[32m        new Thread(() -> {[m
+[32m+[m[32m            try {[m
+[32m+[m[32m                URL url = new URL("https://confirmed-sassy-trade.glitch.me/register");[m
+[32m+[m[32m                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();[m
+[32m+[m[32m                conn.setRequestMethod("POST");[m
+[32m+[m[32m                conn.setRequestProperty("Content-Type", "application/json");[m
+[32m+[m[32m                conn.setDoOutput(true);[m
+[32m+[m
+[32m+[m[32m                String jsonInputString = String.format([m
+[32m+[m[32m                        "{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}", newEmail,  newPassword, newUsername[m
+[32m+[m[32m                );[m
+[32m+[m
+[32m+[m[32m                try (OutputStream os = conn.getOutputStream()) {[m
+[32m+[m[32m                    byte[] input = jsonInputString.getBytes("utf-8");[m
+[32m+[m[32m                    os.write(input, 0, input.length);[m
+[32m+[m[32m                }[m
+[32m+[m[32m                int responseCode = conn.getResponseCode();[m
+[32m+[m[32m                InputStream is = (responseCode < HttpsURLConnection.HTTP_BAD_REQUEST)[m
+[32m+[m[32m                        ? conn.getInputStream()[m
+[32m+[m[32m                        : conn.getErrorStream();[m
+[32m+[m
+[32m+[m[32m                BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));[m
+[32m+[m[32m                StringBuilder response = new StringBuilder();[m
+[32m+[m[32m                String line;[m
+[32m+[m
+[32m+[m[32m                while ((line = br.readLine()) != null) {[m
+[32m+[m[32m                    response.append(line.trim());[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                String finalResponse = response.toString();[m
+[32m+[m
+[32m+[m[32m                runOnUiThread(() -> {[m
+[32m+[m[32m                    Toast.makeText(getApplicationContext(), "サーバーリスポンス：" + finalResponse, Toast.LENGTH_LONG).show();[m
+[32m+[m[32m                });[m
+[32m+[m[32m            } catch (Exception e){[m
+[32m+[m[32m                e.printStackTrace();[m
+[32m+[m[32m                runOnUiThread(() ->[m
+[32m+[m[32m                        Toast.makeText(getApplicationContext(), "エラー： " + e.getMessage(), Toast.LENGTH_LONG).show()[m
+[32m+[m[32m                );[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }).start();[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    public void GetTextFromSql(View v) {[m
+[32m+[m
+[32m+[m[32m        new Thread(() -> {[m
+[32m+[m[32m            DatabaseAPICalls apiCalls = new DatabaseAPICalls();[m
+[32m+[m[32m            apiCalls.fetchUsers(new DatabaseAPICalls.UsersCallback() {[m
+[32m+[m[32m                @Override[m
+[32m+[m[32m                public void onSuccess(ArrayList<RemoteAPI.User> users) {[m
+[32m+[m[32m                    runOnUiThread(() -> {[m
+[32m+[m[32m                        StringBuilder ids = new StringBuilder();[m
+[32m+[m[32m                        StringBuilder emails = new StringBuilder();[m
+[32m+[m[32m                        StringBuilder usernames = new StringBuilder();[m
+[32m+[m
+[32m+[m[32m                        for (RemoteAPI.User user : users) {[m
+[32m+[m[32m                            ids.append(user.id).append("\n");[m
+[32m+[m[32m                            emails.append(user.email).append("\n");[m
+[32m+[m[32m                            usernames.append(user.username).append("\n");[m
+[32m+[m[32m                        }[m
+[32m+[m
+[32m+[m[32m                        tx1.setText(ids.toString());[m
+[32m+[m[32m                        tx2.setText(emails.toString());[m
+[32m+[m[32m                        tx3.setText(usernames.toString());[m
+[32m+[m[32m                        Toast.makeText(getApplicationContext(), "Data loaded!", Toast.LENGTH_SHORT).show();[m
+[32m+[m[32m                    });[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                @Override[m
+[32m+[m[32m                public void onError(String errorMessage) {[m
+[32m+[m[32m                    runOnUiThread(() ->[m
+[32m+[m[32m                            Toast.makeText(getApplicationContext(), "Error: " + errorMessage, Toast.LENGTH_SHORT).show()[m
+[32m+[m[32m                    );[m
+[32m+[m[32m                }[m
+[32m+[m[32m            });[m
+[32m+[m[32m        }).start();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/app/src/main/java/jp/ac/sanpoapp/MainActivity.java b/app/src/main/java/jp/ac/sanpoapp/MainActivity.java[m
+[1mindex 138a256..61246fb 100644[m
+[1m--- a/app/src/main/java/jp/ac/sanpoapp/MainActivity.java[m
+[1m+++ b/app/src/main/java/jp/ac/sanpoapp/MainActivity.java[m
+[36m@@ -2,14 +2,17 @@[m [mpackage jp.ac.sanpoapp;[m
+ [m
+ import android.os.Bundle;[m
+ [m
+[32m+[m
+ import androidx.activity.EdgeToEdge;[m
+ import androidx.appcompat.app.AppCompatActivity;[m
+ import androidx.core.graphics.Insets;[m
+ import androidx.core.view.ViewCompat;[m
+ import androidx.core.view.WindowInsetsCompat;[m
+ [m
+[32m+[m
+ public class MainActivity extends AppCompatActivity {[m
+ [m
+[32m+[m
+     @Override[m
+     protected void onCreate(Bundle savedInstanceState) {[m
+         super.onCreate(savedInstanceState);[m
+[36m@@ -21,4 +24,4 @@[m [mpublic class MainActivity extends AppCompatActivity {[m
+             return insets;[m
+         });[m
+     }[m
+[31m-}[m
+\ No newline at end of file[m
+[32m+[m[32m}[m
+[1mdiff --git a/app/src/main/java/jp/ac/sanpoapp/MySQLAccess.java b/app/src/main/java/jp/ac/sanpoapp/MySQLAccess.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..584cc2c[m
+[1m--- /dev/null[m
+[1m+++ b/app/src/main/java/jp/ac/sanpoapp/MySQLAccess.java[m
+[36m@@ -0,0 +1,36 @@[m
+[32m+[m[32mpackage jp.ac.sanpoapp;[m
+[32m+[m
+[32m+[m[32mimport android.util.Log;[m
+[32m+[m[32mimport java.sql.Connection;[m
+[32m+[m[32mimport java.sql.DriverManager;[m
+[32m+[m[32mimport java.sql.SQLException;[m
+[32m+[m
+[32m+[m[32m//Node info and database info[m
+[32m+[m[32m//https://glitch.com/edit/#!/confirmed-sassy-trade?path=server.js%3A24%3A3[m
+[32m+[m[32m//https://console.aiven.io/account/a533724d6c9e/project/catapp/services/catapp-users/databases[m
+[32m+[m[32mpublic class MySQLAccess {[m
+[32m+[m[32m    String database, url, user, password, ip, port;[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    //Count the steps in the background and then have them pop in when starting the app up[m
+[32m+[m[32m    public Connection connectionClass() {[m
+[32m+[m[32m        database = "sanpo_users";[m
+[32m+[m[32m        port = "26816";[m
+[32m+[m[32m        url = "mysql://avnadmin:AVNS_OMaCie9GH1j3bB46AcC@catapp-users-catapp.h.aivencloud.com:26816/defaultdb?ssl-mode=REQUIRED";[m
+[32m+[m[32m        Connection connection = null;[m
+[32m+[m
+[32m+[m[32m        try {[m
+[32m+[m[32m            Class.forName("com.mysql.cj.jdbc.Driver");[m
+[32m+[m
+[32m+[m[32m            connection = DriverManager.getConnection(url);[m
+[32m+[m[32m            System.out.println("Connected to user database!");[m
+[32m+[m
+[32m+[m[32m            Log.d("DB", "Connection successful");[m
+[32m+[m[32m        } catch (ClassNotFoundException e) {[m
+[32m+[m[32m            Log.e("DB", "JDBC Driver not found", e);[m
+[32m+[m[32m        } catch (SQLException e) {[m
+[32m+[m[32m            Log.e("DB", "Connection failed: " + e.getMessage(), e);[m
+[32m+[m[32m        }[m
+[32m+[m[32m        return connection;[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/app/src/main/java/jp/ac/sanpoapp/RemoteAPI.java b/app/src/main/java/jp/ac/sanpoapp/RemoteAPI.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a3ea128[m
+[1m--- /dev/null[m
+[1m+++ b/app/src/main/java/jp/ac/sanpoapp/RemoteAPI.java[m
+[36m@@ -0,0 +1,130 @@[m
+[32m+[m[32mpackage jp.ac.sanpoapp;[m
+[32m+[m
+[32m+[m[32mimport android.util.Log;[m
+[32m+[m
+[32m+[m[32mimport org.json.JSONArray;[m
+[32m+[m[32mimport org.json.JSONObject;[m
+[32m+[m
+[32m+[m[32mimport java.io.BufferedReader;[m
+[32m+[m[32mimport java.io.InputStream;[m
+[32m+[m[32mimport java.io.InputStreamReader;[m
+[32m+[m[32mimport java.io.OutputStream;[m
+[32m+[m[32mimport java.net.HttpURLConnection;[m
+[32m+[m[32mimport java.net.URL;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m
+[32m+[m[32mpublic class RemoteAPI {[m
+[32m+[m
+[32m+[m[32m    private static final String BASE_URL = "https://confirmed-sassy-trade.glitch.me/users"; // your endpoint[m
+[32m+[m[32m    private static final String TAG = "RemoteAPI";[m
+[32m+[m
+[32m+[m[32m    public interface AuthCallback {[m
+[32m+[m[32m        void onSuccess(String message);[m
+[32m+[m[32m        void onError(String error);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void login(String email, String password, String username, AuthCallback callback) {[m
+[32m+[m[32m        new Thread(() -> {[m
+[32m+[m[32m            try {[m
+[32m+[m[32m                URL url = new URL(BASE_URL + "/login");[m
+[32m+[m[32m                HttpURLConnection conn = (HttpURLConnection) url.openConnection();[m
+[32m+[m[32m                conn.setRequestMethod("POST");[m
+[32m+[m[32m                conn.setRequestProperty("Content-Type", "application/json");[m
+[32m+[m[32m                conn.setDoOutput(true);[m
+[32m+[m
+[32m+[m[32m                JSONObject json = new JSONObject();[m
+[32m+[m[32m                json.put("email", email);[m
+[32m+[m[32m                json.put("password", password);[m
+[32m+[m[32m                json.put("username", username);[m
+[32m+[m
+[32m+[m[32m                OutputStream os = conn.getOutputStream();[m
+[32m+[m[32m                os.write(json.toString().getBytes());[m
+[32m+[m[32m                os.flush();[m
+[32m+[m[32m                os.close();[m
+[32m+[m
+[32m+[m[32m                int responseCode = conn.getResponseCode();[m
+[32m+[m[32m                InputStream is = responseCode == 200 ? conn.getInputStream() : conn.getErrorStream();[m
+[32m+[m[32m                BufferedReader reader = new BufferedReader(new InputStreamReader(is));[m
+[32m+[m[32m                StringBuilder result = new StringBuilder();[m
+[32m+[m[32m                String line;[m
+[32m+[m[32m                while ((line = reader.readLine()) != null) result.append(line);[m
+[32m+[m
+[32m+[m[32m                if (responseCode == 200)[m
+[32m+[m[32m                    callback.onSuccess(result.toString());[m
+[32m+[m[32m                else[m
+[32m+[m[32m                    callback.onError("Login failed: " + result);[m
+[32m+[m
+[32m+[m[32m            } catch (Exception e) {[m
+[32m+[m[32m                callback.onError("Network error: " + e.getMessage());[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }).start();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    public interface OnDataReceivedListener {[m
+[32m+[m[32m        void onDataReceived(ArrayList<User> users);[m
+[32m+[m[32m        void onError(String errorMessage);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void getUsers(OnDataReceivedListener listener) {[m
+[32m+[m[32m        new Thread(() -> {[m
+[32m+[m[32m            HttpURLConnection connection = null;[m
+[32m+[m[32m            try {[m
+[32m+[m[32m                URL url = new URL(BASE_URL);[m
+[32m+[m[32m                connection = (HttpURLConnection) url.openConnection();[m
+[32m+[m
+[32m+[m[32m                connection.setRequestMethod("GET");[m
+[32m+[m[32m                connection.setRequestProperty("Content-Type", "application/json");[m
+[32m+[m[32m                connection.setRequestProperty("Accept", "application/json");[m
+[32m+[m[32m                connection.setRequestProperty("X-api-key", AppConstants.API_KEY);[m
+[32m+[m[32m                connection.setConnectTimeout(10000);[m
+[32m+[m[32m                connection.setReadTimeout(10000);[m
+[32m+[m[32m                connection.setDoInput(true);[m
+[32m+[m
+[32m+[m[32m                InputStreamReader reader = new InputStreamReader(connection.getInputStream());[m
+[32m+[m[32m                BufferedReader bufferedReader = new BufferedReader(reader);[m
+[32m+[m[32m                StringBuilder response = new StringBuilder();[m
+[32m+[m[32m                String line;[m
+[32m+[m[32m                while ((line = bufferedReader.readLine()) != null) {[m
+[32m+[m[32m                    response.append(line.trim());[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                Log.d(TAG, "Response: " + response.toString());[m
+[32m+[m
+[32m+[m[32m                // Parse JSON[m
+[32m+[m[32m                JSONArray jsonArray = new JSONArray(response.toString());[m
+[32m+[m[32m                ArrayList<User> users = new ArrayList<>();[m
+[32m+[m
+[32m+[m[32m                for (int i = 0; i < jsonArray.length(); i++) {[m
+[32m+[m[32m                    JSONObject obj = jsonArray.getJSONObject(i);[m
+[32m+[m[32m                    String id = obj.getString("id");[m
+[32m+[m[32m                    String email = obj.getString("email");[m
+[32m+[m[32m                    String username = obj.getString("username");[m
+[32m+[m[32m                    users.add(new User(id, email, username));[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                listener.onDataReceived(users);[m
+[32m+[m
+[32m+[m[32m            } catch (Exception e) {[m
+[32m+[m[32m                Log.d(TAG, "Error: " + e.getLocalizedMessage());[m
+[32m+[m[32m                listener.onError(e.getLocalizedMessage());[m
+[32m+[m[32m            } finally {[m
+[32m+[m[32m                if (connection != null) {[m
+[32m+[m[32m                    connection.disconnect();[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }).start();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public static class User {[m
+[32m+[m[32m        public String id;[m
+[32m+[m[32m        public String email;[m
+[32m+[m[32m        public String username;[m
+[32m+[m
+[32m+[m[32m        public User(String id, String email, String username) {[m
+[32m+[m[32m            this.id = id;[m
+[32m+[m[32m            this.email = email;[m
+[32m+[m[32m            this.username = username;[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/app/src/main/res/layout/activity_login_test.xml b/app/src/main/res/layout/activity_login_test.xml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..282120e[m
+[1m--- /dev/null[m
+[1m+++ b/app/src/main/res/layout/activity_login_test.xml[m
+[36m@@ -0,0 +1,100 @@[m
+[32m+[m[32m<?xml version="1.0" encoding="utf-8"?>[m
+[32m+[m[32m<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"[m
+[32m+[m[32m    xmlns:app="http://schemas.android.com/apk/res-auto"[m
+[32m+[m[32m    xmlns:tools="http://schemas.android.com/tools"[m
+[32m+[m[32m    android:id="@+id/main"[m
+[32m+[m[32m    android:layout_width="match_parent"[m
+[32m+[m[32m    android:layout_height="match_parent"[m
+[32m+[m[32m    tools:context=".LoginTest">[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        <Button[m
+[32m+[m[32m            android:id="@+id/button"[m
+[32m+[m[32m            android:layout_width="wrap_content"[m
+[32m+[m[32m            android:layout_height="wrap_content"[m
+[32m+[m[32m            android:onClick="GetTextFromSql"[m
+[32m+[m[32m            android:text="SQL TEST"[m
+[32m+[m[32m            app:layout_constraintBottom_toBottomOf="parent"[m
+[32m+[m[32m            app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m            app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m            app:layout_constraintTop_toTopOf="parent" />[m
+[32m+[m
+[32m+[m[32m        <TextView[m
+[32m+[m[32m            android:id="@+id/tx1"[m
+[32m+[m[32m            android:layout_width="wrap_content"[m
+[32m+[m[32m            android:layout_height="wrap_content"[m
+[32m+[m[32m            android:text="TextView"[m
+[32m+[m[32m            app:layout_constraintBottom_toTopOf="@+id/tx2"[m
+[32m+[m[32m            app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m            app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m            app:layout_constraintTop_toBottomOf="@+id/button" />[m
+[32m+[m
+[32m+[m[32m        <TextView[m
+[32m+[m[32m            android:id="@+id/tx2"[m
+[32m+[m[32m            android:layout_width="wrap_content"[m
+[32m+[m[32m            android:layout_height="wrap_content"[m
+[32m+[m[32m            android:text="TextView"[m
+[32m+[m[32m            app:layout_constraintBottom_toBottomOf="parent"[m
+[32m+[m[32m            app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m            app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m            app:layout_constraintTop_toBottomOf="@+id/tx1" />[m
+[32m+[m
+[32m+[m[32m    <TextView[m
+[32m+[m[32m        android:id="@+id/tx3"[m
+[32m+[m[32m        android:layout_width="wrap_content"[m
+[32m+[m[32m        android:layout_height="wrap_content"[m
+[32m+[m[32m        android:text="TextView"[m
+[32m+[m[32m        app:layout_constraintBottom_toBottomOf="parent"[m
+[32m+[m[32m        app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m        app:layout_constraintHorizontal_bias="0.498"[m
+[32m+[m[32m        app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m        app:layout_constraintTop_toBottomOf="@+id/tx2" />[m
+[32m+[m
+[32m+[m[32m    <Button[m
+[32m+[m[32m        android:id="@+id/registerButton"[m
+[32m+[m[32m        android:layout_width="wrap_content"[m
+[32m+[m[32m        android:layout_height="wrap_content"[m
+[32m+[m[32m        android:layout_marginTop="20dp"[m
+[32m+[m[32m        android:onClick="RegisterUser"[m
+[32m+[m[32m        android:text="Register"[m
+[32m+[m[32m        app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m        app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m        app:layout_constraintTop_toBottomOf="@+id/passwordText" />[m
+[32m+[m
+[32m+[m[32m    <EditText[m
+[32m+[m[32m        android:id="@+id/emailText"[m
+[32m+[m[32m        android:layout_width="wrap_content"[m
+[32m+[m[32m        android:layout_height="wrap_content"[m
+[32m+[m[32m        android:layout_marginTop="40dp"[m
+[32m+[m[32m        android:ems="10"[m
+[32m+[m[32m        android:hint="email"[m
+[32m+[m[32m        android:inputType="text"[m
+[32m+[m[32m        app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m        app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m        app:layout_constraintTop_toTopOf="parent" />[m
+[32m+[m
+[32m+[m[32m    <EditText[m
+[32m+[m[32m        android:id="@+id/usernameText"[m
+[32m+[m[32m        android:layout_width="wrap_content"[m
+[32m+[m[32m        android:layout_height="wrap_content"[m
+[32m+[m[32m        android:layout_marginTop="20dp"[m
+[32m+[m[32m        android:ems="10"[m
+[32m+[m[32m        android:hint="username"[m
+[32m+[m[32m        android:inputType="text"[m
+[32m+[m[32m        app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m        app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m        app:layout_constraintTop_toBottomOf="@+id/emailText" />[m
+[32m+[m
+[32m+[m[32m    <EditText[m
+[32m+[m[32m        android:id="@+id/passwordText"[m
+[32m+[m[32m        android:layout_width="wrap_content"[m
+[32m+[m[32m        android:layout_height="wrap_content"[m
+[32m+[m[32m        android:layout_marginTop="30dp"[m
+[32m+[m[32m        android:ems="10"[m
+[32m+[m[32m        android:hint="password"[m
+[32m+[m[32m        android:inputType="text"[m
+[32m+[m[32m        app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m        app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m        app:layout_constraintTop_toBottomOf="@+id/usernameText" />[m
+[32m+[m
+[32m+[m[32m</androidx.constraintlayout.widget.ConstraintLayout>[m
+\ No newline at end of file[m
+[1mdiff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml[m
+[1mindex 86a5d97..9affce0 100644[m
+[1m--- a/app/src/main/res/layout/activity_main.xml[m
+[1m+++ b/app/src/main/res/layout/activity_main.xml[m
+[36m@@ -7,13 +7,4 @@[m
+     android:layout_height="match_parent"[m
+     tools:context=".MainActivity">[m
+ [m
+[31m-    <TextView[m
+[31m-        android:layout_width="wrap_content"[m
+[31m-        android:layout_height="wrap_content"[m
+[31m-        android:text="Hello World!"[m
+[31m-        app:layout_constraintBottom_toBottomOf="parent"[m
+[31m-        app:layout_constraintEnd_toEndOf="parent"[m
+[31m-        app:layout_constraintStart_toStartOf="parent"[m
+[31m-        app:layout_constraintTop_toTopOf="parent" />[m
+[31m-[m
+ </androidx.constraintlayout.widget.ConstraintLayout>[m
+\ No newline at end of file[m
+[1mdiff --git a/build.gradle.kts b/build.gradle.kts[m
+[1mindex 3756278..922f551 100644[m
+[1m--- a/build.gradle.kts[m
+[1m+++ b/build.gradle.kts[m
+[36m@@ -1,4 +1,5 @@[m
+ // Top-level build file where you can add configuration options common to all sub-projects/modules.[m
+ plugins {[m
+     alias(libs.plugins.android.application) apply false[m
+[32m+[m[32m    alias(libs.plugins.kotlin.android) apply false[m
+ }[m
+\ No newline at end of file[m
+[1mdiff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml[m
+[1mindex 1adea96..5ce5530 100644[m
+[1m--- a/gradle/libs.versions.toml[m
+[1m+++ b/gradle/libs.versions.toml[m
+[36m@@ -7,6 +7,8 @@[m [mappcompat = "1.7.0"[m
+ material = "1.12.0"[m
+ activity = "1.10.0"[m
+ constraintlayout = "2.2.0"[m
+[32m+[m[32mkotlin = "1.9.24"[m
+[32m+[m[32mcoreKtx = "1.16.0"[m
+ [m
+ [libraries][m
+ junit = { group = "junit", name = "junit", version.ref = "junit" }[m
+[36m@@ -16,7 +18,9 @@[m [mappcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a[m
+ material = { group = "com.google.android.material", name = "material", version.ref = "material" }[m
+ activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }[m
+ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }[m
+[32m+[m[32mcore-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }[m
+ [m
+ [plugins][m
+ android-application = { id = "com.android.application", version.ref = "agp" }[m
+[32m+[m[32mkotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }[m
+ [m

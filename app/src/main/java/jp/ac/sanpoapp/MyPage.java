@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,11 +14,8 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 public class MyPage extends AppCompatActivity {
 
-    private static final int REQUEST_CODE_SELECT_ICON = 1;
-
-    TextView accountInfo, pointInfo;
-    ImageView petAvatar;
-    LinearLayout pointsContainer;
+    TextView accountInfo;
+    Button myPageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,24 +23,22 @@ public class MyPage extends AppCompatActivity {
         setContentView(R.layout.activity_my_page);
 
         accountInfo = findViewById(R.id.accountInfo);
-        pointInfo = findViewById(R.id.pointInfo);
-        petAvatar = findViewById(R.id.petAvatar);
-        pointsContainer = findViewById(R.id.pointsContainer);
 
-        ExtendedFloatingActionButton logoutButton = findViewById(R.id.logoutButton);
-        ExtendedFloatingActionButton deleteAccountButton = findViewById(R.id.deleteAccountButton);
+        ExtendedFloatingActionButton  logoutButton= findViewById(R.id. logoutButton);
+        ExtendedFloatingActionButton deleteAccountButton= findViewById(R.id.deleteAccountButton);
+
 
         SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String username = prefs.getString("username", null);
 
         if (username == null) {
-            Toast.makeText(this, "ログインしていません！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No user logged in.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, Login.class));
             finish();
             return;
         }
 
-        accountInfo.setText("現在のアカウント: " + username);
+        accountInfo.setText("Logged in as: " + username);
 
         logoutButton.setOnClickListener(v -> {
             SharedPreferences.Editor editor = prefs.edit();
@@ -62,28 +56,15 @@ public class MyPage extends AppCompatActivity {
             editor.clear();
             editor.apply();
 
-            Toast.makeText(this, "アカウントを削除しました。", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Account deleted successfully.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MyPage.this, Register.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
 
-        updatePointUI();
-
-        pointsContainer.setOnClickListener(v -> {
-            startActivity(new Intent(MyPage.this, Count.class));
+        myPageButton.setOnClickListener(v -> {
+            startActivity(new Intent(this, MyPage.class));
         });
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updatePointUI();
-    }
-
-    private void updatePointUI() {
-        SharedPreferences stepPrefs = getSharedPreferences("myPref", Context.MODE_PRIVATE);
-        int points = stepPrefs.getInt("points", 0);
-        pointInfo.setText("ポイント: " + points);
     }
 }
