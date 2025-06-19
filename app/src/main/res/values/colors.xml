@@ -4,6 +4,9 @@
     <color name="pet_secondary">#FFD700</color> <!-- Gold -->
     <color name="pet_accent">#87CEFA</color> <!-- Sky blue -->
     <color name="pet_bg">#FFF5EE</color> <!-- Seashell white -->
-    <color name="pet_text">#5A4D41</color> <!-- Warm brown -->
+    <color name="pet_text">#5A4D41</color> <!-- brown -->
+    <color name="red_700">#D32F2F</color>
     <color name="white">#FFFFFF</color>
+    <color name="soft_green">#6D8B74</color>
+    <color name="warm_brown">#D3A87C</color>
 </resources>

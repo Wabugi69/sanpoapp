@@ -38,13 +38,13 @@ public class Login extends AppCompatActivity {
         ExtendedFloatingActionButton forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
         Button Back = findViewById(R.id.Back);
 
-        // Back button
+        // back to main
         Back.setOnClickListener(v -> {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
-        // Toggle password visibility
+        // toggle password visibility
         togglePasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
                 loginPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -57,7 +57,6 @@ public class Login extends AppCompatActivity {
             loginPassword.setSelection(loginPassword.length());
         });
 
-        // Login button
         loginButton.setOnClickListener(v -> {
             String inputEmail = loginEmail.getText().toString().trim();
             String inputPass = loginPassword.getText().toString().trim();
@@ -67,27 +66,27 @@ public class Login extends AppCompatActivity {
             String savedPass = prefs.getString("password", "");
 
             if (inputEmail.equals(savedEmail) && inputPass.equals(savedPass)) {
-                // Save login state
+                // save login state
                 if (rememberMeCheckBox.isChecked()) {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("rememberMe", true);
                     editor.apply();
                 }
 
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "ログインしました。", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, MyPage.class));
                 finish();
             } else {
-                Toast.makeText(this, "Wrong email or password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "入力に間違いがあります！", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Forgot password button
+        // to reset pin
         forgotPasswordButton.setOnClickListener(v -> {
             startActivity(new Intent(this, ResetPinActivity.class));
         });
 
-        // Auto-fill
+        // info auto-fill
         SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         if (prefs.getBoolean("rememberMe", false)) {
             loginEmail.setText(prefs.getString("email", ""));
