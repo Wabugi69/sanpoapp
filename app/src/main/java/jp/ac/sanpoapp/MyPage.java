@@ -37,7 +37,7 @@ public class MyPage extends AppCompatActivity {
 
         ExtendedFloatingActionButton  logoutButton= findViewById(R.id. logoutButton);
         ExtendedFloatingActionButton deleteAccountButton= findViewById(R.id.deleteAccountButton);
-
+//TODO FIGURE OUT WHY YOU CANT GIT PUSH, LOAD ACCOUNT INFO FROM SAVED PREFERENCES INTO MY PAGE
 
         backToMyPage.setOnClickListener(v -> {
             Intent intent = new Intent(MyPage.this, MainActivity.class);
