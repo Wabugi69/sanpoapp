@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-//Node info and database info
-//https://glitch.com/edit/#!/confirmed-sassy-trade?path=server.js%3A24%3A3
-//https://console.aiven.io/account/a533724d6c9e/project/catapp/services/catapp-users/databases
+
 public class PrefsManager {
     String database, url, user, password, ip, port;
 
