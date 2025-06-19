@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +14,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 public class MyPage extends AppCompatActivity {
 
     TextView accountInfo;
-    ImageView pointIconMyPage;
+    TextView pointInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +22,12 @@ public class MyPage extends AppCompatActivity {
         setContentView(R.layout.activity_my_page);
 
         accountInfo = findViewById(R.id.accountInfo);
-        pointIconMyPage = findViewById(R.id.pointIconMyPage);
+        pointInfo = findViewById(R.id.pointInfo);
 
         ExtendedFloatingActionButton logoutButton = findViewById(R.id.logoutButton);
         ExtendedFloatingActionButton deleteAccountButton = findViewById(R.id.deleteAccountButton);
 
-        pointIconMyPage.setOnClickListener(v -> {
+        pointInfo.setOnClickListener(v -> {
             Intent intent = new Intent(MyPage.this, Count.class);
             startActivity(intent);
             finish();
