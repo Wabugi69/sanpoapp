@@ -23,9 +23,9 @@ public class ResetPinActivity extends AppCompatActivity {
 
         newPasswordInput = findViewById(R.id.newPasswordInput);
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
-
         ExtendedFloatingActionButton resetButton = findViewById(R.id.resetPasswordButton);
 
+        //back to login
         Button backToLoginButton = findViewById(R.id.backToLoginButton);
         backToLoginButton.setOnClickListener(v -> {
             startActivity(new Intent(this, Login.class));
@@ -37,9 +37,9 @@ public class ResetPinActivity extends AppCompatActivity {
             String confirmPass = confirmPasswordInput.getText().toString().trim();
 
             if (newPass.isEmpty() || confirmPass.isEmpty()) {
-                Toast.makeText(this, "Please fill both fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "全ての項目を入力してください！", Toast.LENGTH_SHORT).show();
             } else if (!newPass.equals(confirmPass)) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "パスワードが間違っています！", Toast.LENGTH_SHORT).show();
             } else {
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -48,7 +48,7 @@ public class ResetPinActivity extends AppCompatActivity {
                 editor.putInt("loginAttempts", 0);
                 editor.apply();
 
-                Toast.makeText(this, "Password reset successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "パスワードをリセットしました。", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, Login.class));
                 finish();
             }

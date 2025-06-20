@@ -44,6 +44,12 @@ public class PrefsManager {
         editor.putString("token", null);
     }
 
+    public void clearLoginData(){
+        editor.putString("token", null);
+        editor.putString("username", null);
+        editor.putString("points", null);
+    }
+
     public HttpURLConnection createSecureConnection(String endpoint, String method) throws IOException {
         URL url = new URL(RemoteAPI.getURL() + endpoint);  // e.g., "/user/profile"
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -54,5 +60,9 @@ public class PrefsManager {
         conn.setRequestProperty("Authorization", "Bearer " + token);
         conn.setRequestProperty("Content-Type", "application/json");
         return conn;
+
+//          Can be accessed with this ( change the link depending on location in the site
+//        HttpURLConnection conn = createSecureConnection("/user/profile");
+//        conn.connect();
     }
 }

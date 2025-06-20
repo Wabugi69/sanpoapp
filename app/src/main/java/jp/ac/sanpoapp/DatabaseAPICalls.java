@@ -3,7 +3,10 @@ package jp.ac.sanpoapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.net.URL;
 import java.util.ArrayList;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class DatabaseAPICalls {
 

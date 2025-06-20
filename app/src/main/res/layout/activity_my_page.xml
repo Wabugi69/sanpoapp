@@ -1,77 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/pet_bg"
+    android:padding="16dp"
+    tools:context=".MyPage">
 
-    <TextView
-        android:id="@+id/accountInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Account Info"
-        android:textColor="@color/pet_text"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <ImageView
+        android:id="@+id/decorativeTop"
+        android:layout_width="57dp"
+        android:layout_height="47dp"
+        android:alpha="0.1"
+        android:src="@drawable/pawprint"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="100dp"/>
-
-    <Button
-        android:id="@+id/myPageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="648dp"
-        android:text="My Page"
-        android:textColor="@color/pet_text"
-        app:backgroundTint="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView"
-        tools:ignore="NotSibling" />
-
-    <Button
-        android:id="@+id/backToMyPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:textColor="@color/pet_text"
-        app:backgroundTint="@color/white"
-        android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/pet_primary" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/userInfoCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="32dp"
-        android:layout_marginStart="16dp"/>
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/decorativeTop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Static pet avatar -->
+            <ImageView
+                android:id="@+id/petAvatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/happycat"
+                app:tint="@color/pet_primary" />
+
+            <TextView
+                android:id="@+id/accountInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="アカウント情報"
+                android:textColor="@color/pet_text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="16dp"
+                android:alpha="0.2"
+                android:background="@color/pet_primary" />
+
+            <LinearLayout
+                android:id="@+id/pointsContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/pet_bg"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/pointIconMyPage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="Point Icon"
+                    android:src="@drawable/reward"
+                    app:tint="@color/pet_secondary" />
+
+                <TextView
+                    android:id="@+id/pointInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="ポイント: 0"
+                    android:textColor="@color/pet_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Log Out"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/soft_green"
+        android:text="ログアウト"
         android:textColor="@color/white"
-        app:backgroundTint="@color/pet_primary"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/accountInfo"
-        app:layout_constraintStart_toStartOf="parent"
+        app:cornerRadius="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userInfoCard" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/deleteAccountButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Delete Account"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/red_700"
+        android:text="削除"
         android:textColor="@color/white"
-        app:backgroundTint="@color/pet_primary"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/logoutButton"
-        app:layout_constraintStart_toStartOf="parent"
+        app:cornerRadius="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logoutButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

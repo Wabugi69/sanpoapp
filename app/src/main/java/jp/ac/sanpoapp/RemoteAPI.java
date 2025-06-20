@@ -15,8 +15,6 @@ import java.util.ArrayList;
 
 public class RemoteAPI {
 
-    //TODO Get the new pages from ウイン's GIT uploads
-
     private static final String BASE_URL = "https://confirmed-sassy-trade.glitch.me/users"; // your endpoint
     private static final String TAG = "RemoteAPI";
 

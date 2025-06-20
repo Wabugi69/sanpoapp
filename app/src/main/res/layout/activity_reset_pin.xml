@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/pet_bg">
 
     <EditText
         android:id="@+id/newPasswordInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="New Password"
+        android:hint="パスワード"
         android:inputType="textPassword"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:id="@+id/confirmPasswordInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Confirm Password"
+        android:hint="パスワード（確認）"
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/newPasswordInput"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
         android:id="@+id/resetPasswordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset Password"
+        android:text="パスワードリセット"
         android:textColor="@color/white"
         app:backgroundTint="@color/pet_primary"
         android:textSize="18sp"
@@ -47,7 +47,7 @@
         android:id="@+id/backToLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
+        android:text="戻る"
         android:textColor="@color/pet_text"
         app:backgroundTint="@color/white"
         android:textSize="18sp"

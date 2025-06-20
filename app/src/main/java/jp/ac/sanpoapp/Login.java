@@ -13,20 +13,17 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
-
+import org.json.JSONObject;
 import javax.net.ssl.HttpsURLConnection;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 public class Login extends AppCompatActivity {
 
@@ -55,7 +52,7 @@ public class Login extends AppCompatActivity {
 
         // Back button
         Back.setOnClickListener(v -> {
-//            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
