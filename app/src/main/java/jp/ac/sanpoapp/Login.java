@@ -1,6 +1,5 @@
 package jp.ac.sanpoapp;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,7 +33,6 @@ public class Login extends AppCompatActivity {
     PrefsManager prefs;
 
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +77,6 @@ public class Login extends AppCompatActivity {
             startActivity(new Intent(this, ResetPinActivity.class));
         });
     }
-
-
 
     //ユーザーログイン機能
     public void LoginUser(View v) {

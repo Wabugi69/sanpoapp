@@ -59,7 +59,7 @@ public class Register extends AppCompatActivity {
             String password = passwordInput.getText().toString().trim();
 
             if (email.isEmpty() || username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "全ての項目を入力してください！", Toast.LENGTH_SHORT).show();
             } else {
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -68,7 +68,7 @@ public class Register extends AppCompatActivity {
                 editor.putString("password", password);
                 editor.apply();
 
-                Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "アカウントを作成しました。", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, Login.class));
                 finish();
             }
@@ -84,7 +84,7 @@ public class Register extends AppCompatActivity {
                 startActivity(new Intent(this, Login.class));
                 finish();
             } else {
-                Toast.makeText(this, "No existing account found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "アカウントが見つかりませんでした！", Toast.LENGTH_SHORT).show();
             }
         });
     }

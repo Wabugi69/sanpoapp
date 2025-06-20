@@ -2,10 +2,13 @@ package jp.ac.sanpoapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-
+import android.Manifest;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         PrefsManager prefs = new PrefsManager(this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 100);
+        }
+
         ExtendedFloatingActionButton registerButton = findViewById(R.id.registerButton);
         ExtendedFloatingActionButton existingAccountButton = findViewById(R.id.alreadyAccountButton);
 
@@ -40,5 +49,8 @@ public class MainActivity extends AppCompatActivity {
         existingAccountButton.setOnClickListener(v -> {
            startActivity(new Intent(this, Login.class));
         });
+        if (prefs.getToken() != null){
+            startActivity(new Intent(this, MyPage.class));
+        }
     }
 }

@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="true"></uses-feature>
 
 
     <application
@@ -21,6 +23,9 @@
 <!--            android:exported="false" />-->
         <activity
             android:name=".ResetPinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Count"
             android:exported="false" />
         <activity
             android:name=".MyPage"
