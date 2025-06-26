@@ -60,23 +60,27 @@ public class Count extends AppCompatActivity implements SensorEventListener {
             });
             animator.start();
 
-            //Create animation to decrease steps
-            ValueAnimator stepAnimator = ValueAnimator.ofInt(currentSteps, 0);
-            animator.setDuration(1000);
-            animator.addUpdateListener(animation -> {
-                int animatedValue = (int) animation.getAnimatedValue();
-                stepView.setText("貯まった歩数：" + 0);
-            });
-            stepAnimator.start();
+            //Animate points increasing
             pointView.animate()
                     .alpha(0.5f)
                     .setDuration(100)
                     .withEndAction(() -> pointView.animate().alpha(1f).setDuration(100));
 
+            // Create animation to decrease steps
+            ValueAnimator stepAnimator = ValueAnimator.ofInt(currentSteps, 0);
+            stepAnimator.setDuration(1000); // Use the correct object here
+            stepAnimator.addUpdateListener(animation -> {
+                int animatedValue = (int) animation.getAnimatedValue();
+                stepView.setText("貯まった歩数：" + animatedValue); // Use animatedValue, not hardcoded 0
+            });
+            stepAnimator.start();
+
+            // Optional fade animation
             stepView.animate()
                     .alpha(0.5f)
-                    .setDuration(100)
-                            .withEndAction(() -> stepView.animate().alpha(1f).setDuration(100));
+                    .setDuration(1000)
+                    .withEndAction(() -> stepView.animate().alpha(1f).setDuration(100));
+
             //TODO FIX BUG WHERE MULTIPLE PRESSES RESETS POINTS TO 0 UNTIL PRESSED AGAIN
             prefs.updatePoints(this, (points + prefs.getPoints()));
 
@@ -125,7 +129,7 @@ public class Count extends AppCompatActivity implements SensorEventListener {
         currentSteps = totalSteps - previewTotalSteps;
         if (currentSteps < 0) currentSteps = 0;
 
-        stepView.setText("歩数: " + currentSteps);
+        stepView.setText("貯まった歩数: " + currentSteps);
 
         points = Math.round(currentSteps * POINT_CONVERSION_RATE);
         pointView.setText("ポイント: " + prefs.getPoints());
