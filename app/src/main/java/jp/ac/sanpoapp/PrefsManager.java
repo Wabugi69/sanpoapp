@@ -16,11 +16,13 @@ public class PrefsManager {
 
     private static final String SANPOPREFS = "sanpoPrefs";
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+    public SharedPreferences.Editor editor;
+    RemoteAPI remoteAPI;
 
     public PrefsManager(Context context){
         sharedPreferences = context.getSharedPreferences(SANPOPREFS, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+        remoteAPI = new RemoteAPI();
     }
 
     public void saveToken(String token, String username, int points) {
@@ -39,9 +41,17 @@ public class PrefsManager {
     public int getPoints(){
         return sharedPreferences.getInt("points", 0);
     }
+    public void updatePoints(Context context, int points){
+        setPoints(remoteAPI.updatePoints(context, points));
+    }
+    public void setPoints(int newPoints){
+        editor.putInt("points", newPoints);
+        editor.commit();
+    }
 
     public void clearToken(){
-        editor.putString("token", null);
+        editor.remove("token");
+        editor.apply();
     }
 
     public void clearLoginData(){

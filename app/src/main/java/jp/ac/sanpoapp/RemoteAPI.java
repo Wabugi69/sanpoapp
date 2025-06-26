@@ -4,19 +4,22 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import android.content.Context;
+import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class RemoteAPI {
 
-    private static final String BASE_URL = "https://confirmed-sassy-trade.glitch.me/users"; // your endpoint
+    private static final String BASE_URL = "https://confirmed-sassy-trade.glitch.me/"; // your endpoint
     private static final String TAG = "RemoteAPI";
+    private static int updatedPoints;
 
     public interface AuthCallback {
         void onSuccess(String message);
@@ -59,7 +62,6 @@ public class RemoteAPI {
 //            }
 //        }).start();
 //    }
-
 
     public interface OnDataReceivedListener {
         void onDataReceived(ArrayList<User> users);
@@ -131,4 +133,69 @@ public class RemoteAPI {
     public static String getURL(){
         return BASE_URL;
     }
+
+
+        public static int updatePoints(Context context, int newPoints) {
+            PrefsManager prefs = new PrefsManager(context);
+            String token = prefs.getToken();
+
+            new Thread(() -> {
+                try {
+                    URL url = new URL(BASE_URL + "updatepoints");
+                    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Authorization", "Bearer " + token);
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+
+                    String jsonInputString = String.format("{\"points\": %d}", newPoints);
+
+                    try (OutputStream os = conn.getOutputStream()) {
+                        byte[] input = jsonInputString.getBytes("utf-8");
+                        os.write(input, 0, input.length);
+                    }
+
+                    int responseCode = conn.getResponseCode();
+                    InputStream is = (responseCode < HttpsURLConnection.HTTP_BAD_REQUEST)
+                            ? conn.getInputStream()
+                            : conn.getErrorStream();
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        response.append(line.trim());
+                    }
+                    br.close();
+                    String responseStr = response.toString();
+                    Log.d("UpdatePoints", "Raw server response: " + responseStr);
+
+                    if (responseStr.trim().startsWith("{")) {
+                        JSONObject jsonObject = new JSONObject(responseStr);
+                        int updatedPoints = jsonObject.getInt("updatedPoints");
+                        Log.d("UpdatePoints", "Updated points: " + updatedPoints);
+                    } else {
+                        Log.e("UpdatePoints", "Response is not valid JSON!");
+                    }
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    updatedPoints = jsonObject.getInt("updatedPoints");
+
+
+                    // Toast needs to run on UI thread
+                    if (context instanceof android.app.Activity) {
+                        ((android.app.Activity) context).runOnUiThread(() ->
+                                Toast.makeText(context, "ポイントを更新しました！", Toast.LENGTH_SHORT).show());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (context instanceof android.app.Activity) {
+                        ((android.app.Activity) context).runOnUiThread(() ->
+                                Toast.makeText(context, "エラー: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    }
+                }
+            }).start();
+        return updatedPoints;
+    }
+
 }

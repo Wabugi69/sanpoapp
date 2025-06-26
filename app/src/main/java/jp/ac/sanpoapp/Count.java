@@ -1,5 +1,6 @@
 package jp.ac.sanpoapp;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,8 +24,11 @@ public class Count extends AppCompatActivity implements SensorEventListener {
     private Sensor stepSensor;
     private int totalSteps = 0;
     private int previewTotalSteps = 0;
+    int currentSteps;
     private TextView stepView, pointView;
     private MaterialButton resetButton;
+    PrefsManager prefs;
+    int points;
 
     private static final float POINT_CONVERSION_RATE = 0.1f;//covert 10 steps into 1 point
 
@@ -32,6 +37,7 @@ public class Count extends AppCompatActivity implements SensorEventListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_count);
 
+        prefs = new PrefsManager(this);
         stepView = findViewById(R.id.stepView);
         pointView = findViewById(R.id.pointView);
         resetButton = findViewById(R.id.resetButton);
@@ -43,10 +49,41 @@ public class Count extends AppCompatActivity implements SensorEventListener {
         updateUI();
 
         resetButton.setOnClickListener(v -> {
+            System.out.println(prefs.getPoints() + "   " + points);
+
+            //Create animation to increase points
+            ValueAnimator animator = ValueAnimator.ofInt(prefs.getPoints(), points + prefs.getPoints());
+            animator.setDuration(1000); // 1 second
+            animator.addUpdateListener(animation -> {
+                int animatedValue = (int) animation.getAnimatedValue();
+                pointView.setText("ポイント：　" + String.valueOf(animatedValue));
+            });
+            animator.start();
+
+            //Create animation to decrease steps
+            ValueAnimator stepAnimator = ValueAnimator.ofInt(currentSteps, 0);
+            animator.setDuration(1000);
+            animator.addUpdateListener(animation -> {
+                int animatedValue = (int) animation.getAnimatedValue();
+                stepView.setText("貯まった歩数：" + 0);
+            });
+            stepAnimator.start();
+            pointView.animate()
+                    .alpha(0.5f)
+                    .setDuration(100)
+                    .withEndAction(() -> pointView.animate().alpha(1f).setDuration(100));
+
+            stepView.animate()
+                    .alpha(0.5f)
+                    .setDuration(100)
+                            .withEndAction(() -> stepView.animate().alpha(1f).setDuration(100));
+            //TODO FIX BUG WHERE MULTIPLE PRESSES RESETS POINTS TO 0 UNTIL PRESSED AGAIN
+            prefs.updatePoints(this, (points + prefs.getPoints()));
+
             previewTotalSteps = totalSteps;
             saveData();
             updateUI();
-            Toast.makeText(Count.this, "歩数をリセットしました。", Toast.LENGTH_SHORT).show();
+
         });
 
         Button backtoMyPage = findViewById(R.id.backtoMyPage);
@@ -85,13 +122,13 @@ public class Count extends AppCompatActivity implements SensorEventListener {
     }
 
     private void updateUI() {
-        int currentSteps = totalSteps - previewTotalSteps;
+        currentSteps = totalSteps - previewTotalSteps;
         if (currentSteps < 0) currentSteps = 0;
 
         stepView.setText("歩数: " + currentSteps);
 
-        int points = Math.round(currentSteps * POINT_CONVERSION_RATE);
-        pointView.setText("ポイント: " + points);
+        points = Math.round(currentSteps * POINT_CONVERSION_RATE);
+        pointView.setText("ポイント: " + prefs.getPoints());
 
         saveStepsAndPoints(currentSteps, points);
     }

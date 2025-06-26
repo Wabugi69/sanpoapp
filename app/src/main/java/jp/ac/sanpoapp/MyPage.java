@@ -26,37 +26,40 @@ public class MyPage extends AppCompatActivity {
 
         ExtendedFloatingActionButton logoutButton = findViewById(R.id.logoutButton);
         ExtendedFloatingActionButton deleteAccountButton = findViewById(R.id.deleteAccountButton);
-
+        PrefsManager prefs = new PrefsManager(this);
         pointInfo.setOnClickListener(v -> {
             Intent intent = new Intent(MyPage.this, Count.class);
             startActivity(intent);
             finish();
         });
 
-        PrefsManager prefs = new PrefsManager(this);
 
-            if (prefs.getUsername() == null) {
-                Toast.makeText(this, "ログインしていません！", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, Login.class));
-                finish();
-                return;
-            }
+        if (prefs.getUsername() == null) {
+            Toast.makeText(this, "ログインしていません！", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, Login.class));
+            finish();
+            return;
+        }
 
-            accountInfo.setText(prefs.getUsername());
+        accountInfo.setText(prefs.getUsername());
+        int points = prefs.getPoints();
+        if (points != 0) {
+            pointInfo.setText("ポイント：　" + prefs.getPoints());
+        }
 
-            logoutButton.setOnClickListener(v -> {
-                prefs.clearToken();
+        logoutButton.setOnClickListener(v -> {
+            prefs.clearToken();
 
-                Intent intent = new Intent(MyPage.this, Login.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            });
+            Intent intent = new Intent(MyPage.this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
 
-            deleteAccountButton.setOnClickListener(v -> {
-                String password;
+        deleteAccountButton.setOnClickListener(v -> {
+            String password;
 //TODO FINISH UP THE METHOD TO CLEAR ACCOUNT FROM THE DB
-                prefs.clearToken();
+            prefs.clearToken();
 //
 //            new Thread(() -> {
 //                try {
@@ -84,7 +87,7 @@ public class MyPage extends AppCompatActivity {
 //            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //            startActivity(intent);
 //            finish();
-            });
+        });
 //        myPageButton = findViewById(R.id.myPageButton);
 //        myPageButton.setOnClickListener(v -> {
 //            startActivity(new Intent(this, MyPage.class));

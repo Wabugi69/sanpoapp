@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         existingAccountButton.setOnClickListener(v -> {
            startActivity(new Intent(this, Login.class));
         });
+        //ログインしているならMyPageへ移る
         if (prefs.getToken() != null){
             startActivity(new Intent(this, MyPage.class));
         }
