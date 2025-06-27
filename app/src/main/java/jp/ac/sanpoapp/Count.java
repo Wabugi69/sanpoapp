@@ -24,6 +24,7 @@ public class Count extends AppCompatActivity implements SensorEventListener {
     private Sensor stepSensor;
     private int totalSteps = 0;
     private int previewTotalSteps = 0;
+    private int newPoints;
     int currentSteps;
     private TextView stepView, pointView;
     private MaterialButton resetButton;
@@ -49,44 +50,48 @@ public class Count extends AppCompatActivity implements SensorEventListener {
         updateUI();
 
         resetButton.setOnClickListener(v -> {
-            System.out.println(prefs.getPoints() + "   " + points);
+            if (currentSteps > 10) {
+                System.out.println(prefs.getPoints() + "   " + points);
+                newPoints = points + prefs.getPoints();
 
-            //Create animation to increase points
-            ValueAnimator animator = ValueAnimator.ofInt(prefs.getPoints(), points + prefs.getPoints());
-            animator.setDuration(1000); // 1 second
-            animator.addUpdateListener(animation -> {
-                int animatedValue = (int) animation.getAnimatedValue();
-                pointView.setText("ポイント：　" + String.valueOf(animatedValue));
-            });
-            animator.start();
+                //Create animation to increase points
+                ValueAnimator animator = ValueAnimator.ofInt(prefs.getPoints(), newPoints);
+                animator.setDuration(1000); // 1 second
+                animator.addUpdateListener(animation -> {
+                    int animatedValue = (int) animation.getAnimatedValue();
+                    pointView.setText("ポイント：　" + String.valueOf(animatedValue));
+                });
+                animator.start();
 
-            //Animate points increasing
-            pointView.animate()
-                    .alpha(0.5f)
-                    .setDuration(100)
-                    .withEndAction(() -> pointView.animate().alpha(1f).setDuration(100));
+                //Animate points increasing
+                pointView.animate()
+                        .alpha(0.5f)
+                        .setDuration(100)
+                        .withEndAction(() -> pointView.animate().alpha(1f).setDuration(100));
 
-            // Create animation to decrease steps
-            ValueAnimator stepAnimator = ValueAnimator.ofInt(currentSteps, 0);
-            stepAnimator.setDuration(1000); // Use the correct object here
-            stepAnimator.addUpdateListener(animation -> {
-                int animatedValue = (int) animation.getAnimatedValue();
-                stepView.setText("貯まった歩数：" + animatedValue); // Use animatedValue, not hardcoded 0
-            });
-            stepAnimator.start();
+                // Create animation to decrease steps
+                ValueAnimator stepAnimator = ValueAnimator.ofInt(currentSteps, 0);
+                stepAnimator.setDuration(1000); // Use the correct object here
+                stepAnimator.addUpdateListener(animation -> {
+                    int animatedValue = (int) animation.getAnimatedValue();
+                    stepView.setText("貯まった歩数：" + animatedValue); // Use animatedValue, not hardcoded 0
+                });
+                stepAnimator.start();
 
-            // Optional fade animation
-            stepView.animate()
-                    .alpha(0.5f)
-                    .setDuration(1000)
-                    .withEndAction(() -> stepView.animate().alpha(1f).setDuration(100));
+                // Optional fade animation
+                stepView.animate()
+                        .alpha(0.5f)
+                        .setDuration(1000)
+                        .withEndAction(() -> stepView.animate().alpha(1f).setDuration(100));
 
-            //TODO FIX BUG WHERE MULTIPLE PRESSES RESETS POINTS TO 0 UNTIL PRESSED AGAIN
-            prefs.updatePoints(this, (points + prefs.getPoints()));
+                prefs.setPoints(newPoints);
+                prefs.updateServerPoints(this, newPoints);
 
-            previewTotalSteps = totalSteps;
-            saveData();
-            updateUI();
+                previewTotalSteps = totalSteps;
+                points = 0;
+                saveData();
+                updateUI();
+            }
 
         });
 

@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class PrefsManager {
-    String database, url, user, password, ip, port;
+
 
     private static final String SANPOPREFS = "sanpoPrefs";
     private SharedPreferences sharedPreferences;
@@ -41,16 +41,21 @@ public class PrefsManager {
     public int getPoints(){
         return sharedPreferences.getInt("points", 0);
     }
-    public void updatePoints(Context context, int points){
-        setPoints(remoteAPI.updatePoints(context, points));
+    public void updateServerPoints(Context context, int points){
+            editor.putInt("dbpoints", remoteAPI.updatePoints(context, points));
+            editor.apply();
     }
     public void setPoints(int newPoints){
         editor.putInt("points", newPoints);
-        editor.commit();
+        editor.apply();
     }
 
     public void clearToken(){
         editor.remove("token");
+        editor.apply();
+    }
+    public void clearAll(){
+        editor.clear();
         editor.apply();
     }
 

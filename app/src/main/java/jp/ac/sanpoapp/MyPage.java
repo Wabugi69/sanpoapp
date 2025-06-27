@@ -48,7 +48,8 @@ public class MyPage extends AppCompatActivity {
         }
 
         logoutButton.setOnClickListener(v -> {
-            prefs.clearToken();
+            prefs.updateServerPoints(this, prefs.getPoints());
+            prefs.clearAll();
 
             Intent intent = new Intent(MyPage.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
